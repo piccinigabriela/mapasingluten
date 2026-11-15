@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa sin gluten · Alojamientos sin TACC y sin lactosa en Argentina</title>
+<meta name="description" content="Alojamientos sin gluten (sin TACC) y sin lactosa en Argentina, según lo que informa cada alojamiento. Primera zona: la Costa Atlántica. ¿Tenés un alojamiento? Sumalo gratis.">
+<meta property="og:title" content="Mapa sin gluten">
+<meta property="og:description" content="Alojamientos sin gluten (sin TACC) y sin lactosa. ¿Tenés un alojamiento en la Costa Atlántica? Sumalo gratis al mapa.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mapasingluten.app/">
+<meta name="theme-color" content="#111412">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2C10 2 5.5 6.6 5.5 12.4 5.5 20 16 30 16 30s10.5-10 10.5-17.6C26.5 6.6 22 2 16 2z' fill='%2337A36B'/%3E%3Ccircle cx='16' cy='12.5' r='4' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#111412; --surface:#1A1E1B; --line:#2E3530;
+    --text:#F5F3EE; --text-2:#E2DED5;
+    --accent:#5FD195; --accent-ink:#0B1A12; --accent-soft:#163323;
+    --warn-bg:#2A2416; --warn-line:#5C4C22;
+    --error:#FF9C8A;
+    --radius:16px;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#FAF8F3; --surface:#FFFFFF; --line:#DAD5CA;
+      --text:#141614; --text-2:#2D312D;
+      --accent:#1E6B47; --accent-ink:#FFFFFF; --accent-soft:#E3F1E8;
+      --warn-bg:#FBF3DF; --warn-line:#E2CC8C;
+      --error:#B3261E;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#FAF8F3; --surface:#FFFFFF; --line:#DAD5CA;
+    --text:#141614; --text-2:#2D312D;
+    --accent:#1E6B47; --accent-ink:#FFFFFF; --accent-soft:#E3F1E8;
+    --warn-bg:#FBF3DF; --warn-line:#E2CC8C;
+    --error:#B3261E;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:"DM Sans",system-ui,sans-serif; font-size:17px; line-height:1.6;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:0 16px}
+  h1,h2{font-family:"Outfit",system-ui,sans-serif; line-height:1.15; margin:0}
+
+  header{padding:56px 0 40px}
+  .brand{display:flex; align-items:center; gap:12px; margin-bottom:28px}
+  .brand svg{width:34px; height:34px; flex:none}
+  .brand span{font-family:"Outfit",sans-serif; font-weight:700; font-size:22px}
+  h1{font-size:clamp(34px,8vw,48px); font-weight:700; letter-spacing:-0.02em}
+  .sub{color:var(--text-2); font-size:18px; margin:16px 0 0}
+
+  .zona{
+    display:inline-block; margin-top:28px; padding:8px 16px;
+    background:var(--accent-soft); color:var(--text); border-radius:999px;
+    font-weight:600; font-size:15px;
+  }
+
+  section{padding:40px 0; border-top:1px solid var(--line)}
+  h2{font-size:28px; font-weight:600; margin-bottom:12px}
+  .lead{color:var(--text-2); margin:0 0 28px}
+
+  form{display:grid; gap:24px}
+  .field{display:grid; gap:8px}
+  label, .q{font-weight:600; font-size:16px}
+  .hint{color:var(--text-2); font-size:15px; font-weight:400}
+  input[type=text], input[type=tel], input[type=email], select, textarea{
+    width:100%; font:inherit; color:var(--text); background:var(--surface);
+    border:1.5px solid var(--line); border-radius:12px; padding:13px 14px;
+  }
+  textarea{min-height:110px; resize:vertical}
+  ::placeholder{color:var(--text-2); opacity:.75}
+  input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent)}
+  .row{display:grid; gap:16px; grid-template-columns:1fr}
+  @media (min-width:560px){ .row{grid-template-columns:1fr 1fr} }
+
+  .opts{display:grid; gap:10px}
+  .opt{
+    display:flex; gap:12px; align-items:flex-start; padding:14px 16px;
+    background:var(--surface); border:1.5px solid var(--line); border-radius:12px;
+    cursor:pointer; font-weight:500;
+  }
+  .opt:has(input:checked){border-color:var(--accent); background:var(--accent-soft)}
+  .opt input{margin:4px 0 0; accent-color:var(--accent); width:18px; height:18px; flex:none}
+
+  .num{
+    display:inline-grid; place-items:center; width:26px; height:26px; margin-right:8px;
+    border-radius:50%; background:var(--accent); color:var(--accent-ink);
+    font-size:14px; font-weight:700; vertical-align:2px;
+  }
+
+  button{
+    font:inherit; font-weight:600; font-size:18px; cursor:pointer;
+    background:var(--accent); color:var(--accent-ink); border:0; border-radius:12px;
+    padding:16px 20px; width:100%;
+  }
+  button:disabled{opacity:.6; cursor:wait}
+
+  .aviso{
+    background:var(--warn-bg); border:1px solid var(--warn-line); border-radius:var(--radius);
+    padding:18px 20px; font-size:16px;
+  }
+  .msg{display:none; padding:20px; border-radius:var(--radius); font-weight:500}
+  .msg.ok{display:block; background:var(--accent-soft); border:1px solid var(--accent)}
+  .msg.err{display:block; color:var(--error); border:1px solid var(--error)}
+  .hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+
+  a{color:var(--accent); font-weight:600}
+  .card{
+    display:block; padding:22px; background:var(--surface); border:1.5px solid var(--line);
+    border-radius:var(--radius); color:var(--text); text-decoration:none;
+  }
+  .card strong{display:block; font-family:"Outfit",sans-serif; font-size:20px; margin-bottom:4px}
+  .card span{color:var(--text-2)}
+  .card:hover{border-color:var(--accent)}
+
+  footer{padding:40px 0 56px; border-top:1px solid var(--line); color:var(--text-2); font-size:15px}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2C10 2 5.5 6.6 5.5 12.4 5.5 20 16 30 16 30s10.5-10 10.5-17.6C26.5 6.6 22 2 16 2z" fill="var(--accent)"/><circle cx="16" cy="12.5" r="4" fill="var(--bg)"/></svg>
+    <span>Mapa sin gluten</span>
+  </div>
+  <h1>Viajá tranquilo. Comé tranquilo.</h1>
+  <p class="sub">Alojamientos sin gluten (sin TACC) y sin lactosa · Un proyecto de Loomi</p>
+  <div class="zona">Primera zona: Costa Atlántica · Muy pronto</div>
+</header>
+
+<main class="wrap">
+
+  <section id="sumate">
+    <h2>Sumá tu alojamiento</h2>
+    <p class="lead">Es gratis. Son tres preguntas y antes de publicar te mandamos tu ficha para que la apruebes.</p>
+
+    <form id="form" novalidate>
+      <div class="row">
+        <div class="field">
+          <label for="alojamiento">Nombre del alojamiento</label>
+          <input id="alojamiento" name="alojamiento" type="text" maxlength="120" required autocomplete="organization">
+        </div>
+        <div class="field">
+          <label for="localidad">Localidad</label>
+          <input id="localidad" name="localidad" type="text" maxlength="80" required placeholder="Ej.: Mar de las Pampas">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="partido">Partido</label>
+        <select id="partido" name="partido">
+          <option value="">Elegí uno</option>
+          <option>La Costa</option>
+          <option>Pinamar</option>
+          <option>Villa Gesell</option>
+          <option>Mar Chiquita</option>
+          <option>General Pueyrredon</option>
+          <option>General Alvarado</option>
+          <option>Lobería</option>
+          <option>Necochea</option>
+          <option>San Cayetano</option>
+          <option>Tres Arroyos</option>
+          <option>Coronel Dorrego</option>
+          <option>Monte Hermoso</option>
+          <option>Coronel Rosales</option>
+          <option>Otra zona del país</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <div class="q"><span class="num">1</span>¿Sirven comida a los huéspedes?</div>
+        <div class="opts" role="radiogroup">
+          <label class="opt"><input type="radio" name="comida" value="sirve" required> Sí, servimos desayuno u otras comidas</label>
+          <label class="opt"><input type="radio" name="comida" value="cocina_equipada"> No, pero las unidades tienen cocina equipada</label>
+          <label class="opt"><input type="radio" name="comida" value="no"> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="ofrece"><span class="num">2</span>¿Ofrecen opciones sin gluten o sin lactosa? Contanos cómo.</label>
+        <span class="hint">Por ejemplo: productos envasados, desayuno con aviso, cocina con cuidados, leche sin lactosa.</span>
+        <textarea id="ofrece" name="ofrece" maxlength="1000"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="q"><span class="num">3</span>¿Querés aparecer gratis en el mapa?</div>
+        <label class="opt"><input type="checkbox" id="permiso" name="permiso" required> Sí, quiero aparecer. Sé que se publica según lo que informamos nosotros.</label>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="contacto_nombre">Tu nombre</label>
+          <input id="contacto_nombre" name="contacto_nombre" type="text" maxlength="80" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="whatsapp">WhatsApp</label>
+          <input id="whatsapp" name="whatsapp" type="tel" maxlength="30" required autocomplete="tel" placeholder="Ej.: 2254 123456">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="email">Email <span class="hint">(opcional)</span></label>
+          <input id="email" name="email" type="email" maxlength="120" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="web">Web o Instagram <span class="hint">(opcional)</span></label>
+          <input id="web" name="web" type="text" maxlength="200">
+        </div>
+      </div>
+
+      <div class="hp" aria-hidden="true"><label>No completar <input type="text" name="sitio" tabindex="-1" autocomplete="off"></label></div>
+
+      <div id="msg" class="msg" role="status"></div>
+      <button type="submit" id="btn">Quiero aparecer</button>
+      <p class="hint" style="margin:0">Usamos estos datos solo para armar tu ficha y escribirte.</p>
+    </form>
+  </section>
+
+  <section>
+    <h2>¿Sos celíaco o intolerante a la lactosa?</h2>
+    <p class="lead">Estamos sumando alojamientos de la Costa Atlántica. Mientras tanto, te dejamos algo para leer.</p>
+    <a class="card" href="https://loomisuite.net/manual?m=sintacc" target="_blank" rel="noopener">
+      <strong>Manual “Sin gluten, sin lactosa”</strong>
+      <span>Qué preguntar antes de reservar y cómo avisar tu condición.</span>
+    </a>
+  </section>
+
+  <section>
+    <div class="aviso">
+      <strong>Importante:</strong> la información de cada alojamiento es la que informó el propio alojamiento. No es una certificación. Ante cualquier duda, consultá directamente antes de reservar.
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  Mapa sin gluten · Un proyecto de <a href="https://loomisuite.net" target="_blank" rel="noopener">Loomi</a>
+</footer>
+
+<script>
+(function(){
+  var SUPABASE_URL = "https://vnfgitgadadjjjciftsa.supabase.co";
+  var SUPABASE_KEY = "sb_publishable_IKbP0ieyJfrtdguY39N7wg_RMjN_CxH";
+
+  var form = document.getElementById("form");
+  var msg = document.getElementById("msg");
+  var btn = document.getElementById("btn");
+
+  function show(type, text){ msg.className = "msg " + type; msg.textContent = text; }
+  function val(name){ var el = form.elements[name]; return el && el.value ? el.value.trim() : ""; }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    if (val("sitio")) return; // trampa para bots
+
+    var comida = form.querySelector('input[name="comida"]:checked');
+    if (!val("alojamiento") || !val("localidad")) { show("err", "Completá el nombre del alojamiento y la localidad."); return; }
+    if (!comida) { show("err", "Contestá la pregunta 1."); return; }
+    if (!document.getElementById("permiso").checked) { show("err", "Para aparecer en el mapa necesitamos que marques la pregunta 3."); return; }
+    if (val("whatsapp").replace(/\D/g,"").length < 6) { show("err", "Dejanos un WhatsApp para escribirte."); return; }
+
+    var data = {
+      alojamiento: val("alojamiento"),
+      localidad: val("localidad"),
+      partido: val("partido") || null,
+      comida: comida.value,
+      ofrece: val("ofrece") || null,
+      permiso: true,
+      contacto_nombre: val("contacto_nombre") || null,
+      whatsapp: val("whatsapp"),
+      email: val("email") || null,
+      web: val("web") || null
+    };
+
+    btn.disabled = true; btn.textContent = "Enviando…";
+    fetch(SUPABASE_URL + "/rest/v1/mapa_solicitudes", {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(data)
+    }).then(function(r){
+      if (!r.ok) throw new Error(r.status);
+      form.reset();
+      show("ok", "¡Listo! Te escribimos por WhatsApp para armar tu ficha antes de publicarla.");
+      btn.textContent = "Enviado";
+    }).catch(function(){
+      show("err", "No se pudo enviar. Probá de nuevo en un rato.");
+      btn.disabled = false; btn.textContent = "Quiero aparecer";
+    });
+  });
+})();
+</script>
+</body>
+</html>
