@@ -585,28 +585,38 @@
           </div>
           <div class="field">
             <label for="localidad">Localidad</label>
-            <input id="localidad" name="localidad" type="text" maxlength="80" required placeholder="Ej.: Mar de las Pampas">
+            <input id="localidad" name="localidad" type="text" maxlength="80" required placeholder="Ej.: Tilcara">
           </div>
         </div>
 
         <div class="field">
-          <label for="partido">Partido</label>
-          <select id="partido" name="partido">
-            <option value="">Elegí uno</option>
-            <option>La Costa</option>
-            <option>Pinamar</option>
-            <option>Villa Gesell</option>
-            <option>Mar Chiquita</option>
-            <option>General Pueyrredon</option>
-            <option>General Alvarado</option>
-            <option>Lobería</option>
-            <option>Necochea</option>
-            <option>San Cayetano</option>
-            <option>Tres Arroyos</option>
-            <option>Coronel Dorrego</option>
-            <option>Monte Hermoso</option>
-            <option>Coronel Rosales</option>
-            <option>Otra zona del país</option>
+          <label for="provincia">Provincia</label>
+          <select id="provincia" name="provincia" required>
+            <option value="">Elegí una</option>
+            <option>Buenos Aires</option>
+            <option>Ciudad de Buenos Aires</option>
+            <option>Catamarca</option>
+            <option>Chaco</option>
+            <option>Chubut</option>
+            <option>Córdoba</option>
+            <option>Corrientes</option>
+            <option>Entre Ríos</option>
+            <option>Formosa</option>
+            <option>Jujuy</option>
+            <option>La Pampa</option>
+            <option>La Rioja</option>
+            <option>Mendoza</option>
+            <option>Misiones</option>
+            <option>Neuquén</option>
+            <option>Río Negro</option>
+            <option>Salta</option>
+            <option>San Juan</option>
+            <option>San Luis</option>
+            <option>Santa Cruz</option>
+            <option>Santa Fe</option>
+            <option>Santiago del Estero</option>
+            <option>Tierra del Fuego</option>
+            <option>Tucumán</option>
           </select>
         </div>
 
@@ -723,6 +733,7 @@
 
     var comida = form.querySelector('input[name="comida"]:checked');
     if (!val("alojamiento") || !val("localidad")) { show("err", "Completá el nombre del alojamiento y la localidad."); return; }
+    if (!val("provincia")) { show("err", "Elegí la provincia."); return; }
     if (!comida) { show("err", "Contestá la pregunta 1."); return; }
     if (!document.getElementById("permiso").checked) { show("err", "Para aparecer en el mapa, marcá la pregunta 3."); return; }
     if (val("whatsapp").replace(/\D/g,"").length < 6) { show("err", "Dejanos un WhatsApp para escribirte."); return; }
@@ -730,7 +741,7 @@
     var data = {
       alojamiento: val("alojamiento"),
       localidad: val("localidad"),
-      partido: val("partido") || null,
+      provincia: val("provincia") || null,
       comida: comida.value,
       ofrece: val("ofrece") || null,
       comercios: comida.value === "cocina_equipada" ? (val("comercios") || null) : null,
