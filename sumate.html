@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sumá tu alojamiento · Mapa sin gluten</title>
+<meta name="description" content="Sumá gratis tu alojamiento al Mapa sin gluten: el buscador de alojamientos sin gluten (sin TACC) de Argentina. Mirá cómo se ve una ficha y completá tres preguntas.">
+<meta property="og:title" content="Mapa sin gluten · Tu brújula sin gluten">
+<meta property="og:description" content="Alojamientos sin gluten (sin TACC) en Argentina. ¿Tenés un alojamiento? Sumalo gratis al mapa.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mapasingluten.app/sumate">
+<link rel="canonical" href="https://mapasingluten.app/sumate">
+<meta name="theme-color" content="#0E2A2F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230E2A2F'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%23F3EEE3' stroke-width='3'/%3E%3Cpath d='M32 10 L39 32 L32 30 L25 32Z' fill='%23E8B84A'/%3E%3Cpath d='M32 54 L25 32 L32 34 L39 32Z' fill='%237FD1C2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E2A2F;          /* mar de noche */
+    --bg-2:#123339;
+    --surface:#163D44;
+    --line:#2C5A61;
+    --text:#F3EEE3;        /* espuma */
+    --text-2:#D9E3DF;
+    --wheat:#E8B84A;       /* trigo: aguja norte */
+    --wheat-ink:#1C1404;
+    --foam:#7FD1C2;        /* agua */
+    --foam-soft:#1D4A4C;
+    --error:#FFB4A6;
+    --display:"Bricolage Grotesque", system-ui, sans-serif;
+    --body:"Atkinson Hyperlegible", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#E6F0EC; --bg-2:#DCE9E4; --surface:#FFFFFF; --line:#B7CCC5;
+      --text:#0E2A2F; --text-2:#1F4248;
+      --wheat:#8C6400; --wheat-ink:#FFFFFF;
+      --foam:#0E6B62; --foam-soft:#D3EBE4;
+      --error:#A3241A;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#E6F0EC; --bg-2:#DCE9E4; --surface:#FFFFFF; --line:#B7CCC5;
+    --text:#0E2A2F; --text-2:#1F4248;
+    --wheat:#8C6400; --wheat-ink:#FFFFFF;
+    --foam:#0E6B62; --foam-soft:#D3EBE4;
+    --error:#A3241A;
+  }
+
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--body); font-size:18px; line-height:1.6;
+  }
+  a{color:var(--foam); font-weight:700; text-underline-offset:3px}
+  :focus-visible{outline:3px solid var(--wheat); outline-offset:3px; border-radius:6px}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px}
+  .narrow{max-width:680px}
+
+  h1,h2,h3{font-family:var(--display); margin:0; letter-spacing:-0.015em}
+
+  /* ---------- Marca ---------- */
+  .brand{display:flex; align-items:center; gap:12px; padding:28px 0 0; text-decoration:none; color:var(--text); width:max-content}
+  .brand svg{width:40px; height:40px}
+  .brand span{font-family:var(--display); font-weight:700; font-size:21px}
+
+  /* ---------- Portada ---------- */
+  .hero{display:grid; gap:48px; padding:64px 0 88px; align-items:center}
+  @media (min-width:900px){ .hero{grid-template-columns:1.2fr .8fr; padding:96px 0 120px} }
+  .hero h1{font-size:clamp(46px,9.5vw,92px); font-weight:800; line-height:.98}
+  .hero .sub{font-size:21px; color:var(--text-2); margin:24px 0 0; max-width:30ch}
+  .hero .por{font-size:16px; color:var(--text-2); margin:10px 0 0}
+  .acciones{display:flex; flex-wrap:wrap; gap:14px; margin-top:36px}
+  .btn{
+    display:inline-block; font:inherit; font-weight:700; font-size:18px; text-decoration:none;
+    padding:15px 24px; border-radius:999px; border:2px solid transparent; cursor:pointer;
+  }
+  .btn-trigo{background:var(--wheat); color:var(--wheat-ink)}
+  .btn-linea{border-color:var(--text-2); color:var(--text)}
+
+  .rosa{justify-self:center; width:min(320px,78vw); aspect-ratio:1}
+  .rosa svg{width:100%; height:100%; overflow:visible}
+  .aguja{animation:orientar 2.4s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes orientar{
+    0%{transform:rotate(-130deg)} 55%{transform:rotate(22deg)} 75%{transform:rotate(-8deg)} 100%{transform:rotate(0)}
+  }
+  @media (prefers-reduced-motion: reduce){ .aguja{animation:none} }
+
+  /* ---------- Portada con foto ---------- */
+  .portada{position:relative; overflow:hidden; color:#F3EEE3; background:#0E2A2F}
+  .portada-fondo{position:absolute; inset:-24px; width:calc(100% + 48px); height:calc(100% + 48px); object-fit:cover; filter:blur(4px)}
+  .portada-velo{position:absolute; inset:0; background:rgba(14,42,47,.38)}
+  .portada-in{position:relative; max-width:1080px; margin:0 auto; padding:24px 20px 28px}
+  .portada .brand{color:#F3EEE3; padding-top:4px}
+  .portada-grid{display:grid; gap:36px; align-items:center; justify-items:center; padding:36px 0 20px}
+  @media (min-width:900px){ .portada-grid{grid-template-columns:auto 1fr; justify-items:start; gap:56px; padding:56px 0 36px} }
+  .circulo{
+    width:min(460px,86vw); aspect-ratio:1; border-radius:50%; box-sizing:border-box; padding:0 9%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    background:rgba(14,42,47,.72); border:2px solid rgba(243,238,227,.55);
+  }
+  @supports ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
+    .circulo{background:rgba(14,42,47,.58); backdrop-filter:blur(64px) saturate(.9); -webkit-backdrop-filter:blur(64px) saturate(.9)}
+  }
+  .circulo svg{width:56px; height:56px}
+  .circulo h1{font-size:clamp(34px,6.4vw,54px); font-weight:800; line-height:1; margin-top:14px; color:#F3EEE3}
+  .circulo .lema{font-size:clamp(18px,2.6vw,22px); margin:10px 0 0}
+  .circulo .bajada{font-size:15px; margin:8px 0 0}
+  .circulo .btn{margin-top:22px; font-size:17px; padding:13px 22px}
+  .regiones{list-style:none; margin:0; padding:0; display:grid; gap:14px; width:100%; max-width:420px}
+  .regiones-tit{font-family:var(--display); font-weight:700; font-size:18px; margin:0 0 4px}
+  .region{display:flex; align-items:center; gap:14px}
+  .region .ico{width:56px; height:56px; flex:none; border-radius:50%; display:grid; place-items:center; background:rgba(14,42,47,.8); border:2px solid #F3EEE3}
+  .region .ico svg{width:28px; height:28px}
+  .region strong{display:block; font-family:var(--display); font-size:22px; line-height:1.15}
+  .region span{display:block; font-size:15px}
+  @media (min-width:900px){
+    .regiones li:nth-child(2){margin-left:0}
+    .regiones li:nth-child(3){margin-left:44px}
+    .regiones li:nth-child(4){margin-left:64px}
+    .regiones li:nth-child(5){margin-left:64px}
+    .regiones li:nth-child(6){margin-left:44px}
+  }
+  .credito{font-size:13px; text-align:right; margin:8px 0 0}
+  .credito a{color:#F3EEE3}
+  .portada .btn-trigo:focus-visible,.portada a:focus-visible{outline-color:#E8B84A}
+
+  /* ---------- Contacto en fichas ---------- */
+  .contacto{padding:20px 32px 6px; border-top:1px solid var(--line)}
+  .contacto h4{margin:0 0 12px; font-family:var(--display); font-size:19px}
+  .contacto-btns{display:flex; flex-wrap:wrap; gap:10px}
+  .cbtn{display:inline-flex; align-items:center; gap:8px; font:inherit; font-weight:700; font-size:16px; min-height:46px; padding:0 18px; border-radius:999px; cursor:pointer; border:2px solid var(--foam); background:transparent; color:var(--text)}
+  .cbtn svg{width:20px; height:20px}
+  .cbtn.principal{background:var(--wheat); border-color:var(--wheat); color:var(--wheat-ink)}
+  .nota-contacto{margin:12px 0 14px; font-size:15px; color:var(--text-2)}
+  .nota-contacto.activa{color:var(--text); font-weight:700}
+
+  /* ---------- Secciones ---------- */
+  section{padding:88px 0}
+  .banda{background:var(--bg-2)}
+  h2{font-size:clamp(32px,5.4vw,48px); font-weight:700; line-height:1.05}
+  .intro{color:var(--text-2); font-size:19px; margin:16px 0 0; max-width:56ch}
+
+  /* ---------- Recorrido de la Costa ---------- */
+  .costa{display:grid; gap:48px; margin-top:48px}
+  @media (min-width:900px){ .costa{grid-template-columns:.9fr 1.1fr; align-items:start} }
+  .recorrido{list-style:none; margin:0; padding:0 0 0 30px; position:relative}
+  .recorrido::before{
+    content:""; position:absolute; left:9px; top:10px; bottom:10px; width:4px; border-radius:4px;
+    background:repeating-linear-gradient(var(--foam) 0 10px, transparent 10px 18px);
+  }
+  .recorrido li{position:relative; padding:0 0 26px}
+  .recorrido li:last-child{padding-bottom:0}
+  .recorrido li::before{
+    content:""; position:absolute; left:-30px; top:6px; width:22px; height:22px; border-radius:50%;
+    background:var(--bg-2); border:4px solid var(--foam);
+  }
+  .recorrido strong{font-family:var(--display); font-size:22px; display:block; line-height:1.2}
+  .recorrido span{color:var(--text-2)}
+  .nota-costa{
+    background:var(--surface); border-radius:28px; padding:32px;
+    border:2px solid var(--line);
+  }
+  .nota-costa h3{font-size:28px; line-height:1.15}
+  .nota-costa p{color:var(--text-2); margin:14px 0 0}
+
+  /* ---------- Ficha de ejemplo ---------- */
+  .ficha{
+    margin-top:48px; background:var(--surface); border-radius:28px; overflow:hidden;
+    border:2px solid var(--line); max-width:760px;
+  }
+  .ficha-cab{padding:28px 32px; border-bottom:2px solid var(--line); display:flex; flex-wrap:wrap; gap:12px 20px; align-items:baseline; justify-content:space-between}
+  .ficha-cab h3{font-size:28px}
+  .ficha-cab .lugar{color:var(--text-2)}
+  .categoria{
+    display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:16px;
+    background:var(--foam-soft); color:var(--text); padding:6px 14px; border-radius:999px;
+  }
+  .categoria::before{content:""; width:10px; height:10px; border-radius:50%; background:var(--foam)}
+  .ficha-cuerpo{padding:8px 32px 28px}
+  .bloque{padding:20px 0; border-bottom:1px solid var(--line)}
+  .bloque:last-child{border-bottom:0}
+  .bloque h4{margin:0 0 8px; font-family:var(--display); font-size:19px}
+  .bloque ul{margin:0; padding-left:20px; color:var(--text-2)}
+  .bloque li{margin:2px 0}
+  .bloque.clave{border-left:5px solid var(--wheat); margin:12px 0 4px; padding:16px 20px; background:var(--bg-2); border-radius:0 16px 16px 0; border-bottom:0}
+  .ficha-pie{padding:18px 32px; background:var(--bg-2); color:var(--text-2); font-size:16px}
+  .ejemplo{font-style:italic; color:var(--text-2); margin:14px 0 0; font-size:16px}
+  .aviso-ejemplo{display:flex; gap:12px; align-items:flex-start; margin-top:32px; max-width:760px; background:var(--foam-soft); border:2px solid var(--foam); border-radius:18px; padding:16px 20px; font-size:17px}
+  .aviso-ejemplo strong{font-family:var(--display)}
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; margin-top:28px; max-width:760px}
+  .tab{font:inherit; font-weight:700; font-size:16px; min-height:44px; padding:0 18px; border-radius:999px; border:2px solid var(--line); background:transparent; color:var(--text); cursor:pointer}
+  .tab:hover{border-color:var(--wheat)}
+  .tab[aria-selected="true"]{background:var(--wheat); border-color:var(--wheat); color:var(--wheat-ink)}
+  .ficha{margin-top:20px}
+  .fotos{display:grid; gap:4px; background:var(--line)}
+  .foto-principal{position:relative}
+  .fotos img{display:block; width:100%; height:auto; object-fit:cover}
+  .foto-principal img{aspect-ratio:16/8}
+  .fotos-chicas{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px}
+  .fotos-chicas img{aspect-ratio:4/3}
+  .ilustrativa{position:absolute; left:14px; bottom:14px; background:rgba(14,42,47,.85); color:#F3EEE3; font-weight:700; font-size:14px; padding:6px 12px; border-radius:999px}
+  .ficha-ej{display:inline-block; margin-top:6px; font-size:14px; font-weight:700; border:2px dashed var(--text-2); padding:2px 10px; border-radius:999px}
+  .sello{display:flex; align-items:center; gap:8px; margin-top:8px; font-weight:700; font-size:15px; color:var(--wheat)}
+
+  /* ---------- Cómo funciona ---------- */
+  .pasos{list-style:none; padding:0; margin:40px 0 56px; display:grid; gap:28px; counter-reset:paso}
+  @media (min-width:760px){ .pasos{grid-template-columns:repeat(3,1fr)} }
+  .pasos li{counter-increment:paso; padding-top:58px; position:relative}
+  .pasos li::before{
+    content:counter(paso); position:absolute; top:0; left:0; width:44px; height:44px; border-radius:50%;
+    display:grid; place-items:center; font-family:var(--display); font-weight:800; font-size:20px;
+    background:var(--wheat); color:var(--wheat-ink);
+  }
+  .pasos strong{display:block; font-family:var(--display); font-size:21px; line-height:1.2}
+  .pasos span{color:var(--text-2)}
+
+  /* ---------- Formulario ---------- */
+  form{display:grid; gap:26px; background:var(--surface); border:2px solid var(--line); border-radius:28px; padding:32px}
+  @media (max-width:520px){ form{padding:22px} }
+  .field{display:grid; gap:8px}
+  label,.q{font-weight:700; font-size:17px}
+  .hint{color:var(--text-2); font-size:16px; font-weight:400}
+  input[type=text],input[type=tel],input[type=email],select,textarea{
+    width:100%; font:inherit; font-size:17px; color:var(--text); background:var(--bg);
+    border:2px solid var(--line); border-radius:14px; padding:13px 15px;
+  }
+  textarea{min-height:110px; resize:vertical}
+  ::placeholder{color:var(--text-2); opacity:.7}
+  input:focus,select:focus,textarea:focus{outline:none; border-color:var(--wheat)}
+  .row{display:grid; gap:20px}
+  @media (min-width:620px){ .row{grid-template-columns:1fr 1fr} }
+  .opts{display:grid; gap:10px}
+  .opt{
+    display:flex; gap:12px; align-items:flex-start; padding:14px 16px; cursor:pointer; font-weight:400;
+    background:var(--bg); border:2px solid var(--line); border-radius:14px;
+  }
+  .opt:has(input:checked){border-color:var(--foam); background:var(--foam-soft)}
+  .opt input{margin:4px 0 0; width:20px; height:20px; flex:none; accent-color:var(--foam)}
+  .num{
+    display:inline-grid; place-items:center; width:30px; height:30px; margin-right:10px; border-radius:50%;
+    background:var(--wheat); color:var(--wheat-ink); font-family:var(--display); font-weight:800; font-size:15px; vertical-align:1px;
+  }
+  form .btn{width:100%; font-size:19px; padding:17px}
+  .msg{display:none; padding:18px 20px; border-radius:16px; font-weight:700}
+  .msg.ok{display:block; background:var(--foam-soft); border:2px solid var(--foam)}
+  .msg.err{display:block; color:var(--error); border:2px solid var(--error)}
+  .hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+
+  /* ---------- Viajeros ---------- */
+  .viajeros{display:grid; gap:32px; align-items:center}
+  @media (min-width:860px){ .viajeros{grid-template-columns:1fr 1fr} }
+  .manual{
+    display:block; text-decoration:none; color:var(--text); background:var(--surface);
+    border:2px solid var(--line); border-radius:28px; padding:30px;
+  }
+  .manual:hover{border-color:var(--foam)}
+  .manual strong{display:block; font-family:var(--display); font-size:26px; line-height:1.15}
+  .manual span{display:block; color:var(--text-2); margin-top:8px}
+  .manual em{display:inline-block; margin-top:18px; font-style:normal; font-weight:700; color:var(--foam)}
+
+  /* ---------- Aviso y pie ---------- */
+  .aviso{border-left:5px solid var(--wheat); padding:6px 0 6px 22px; font-size:18px; max-width:62ch}
+  .aviso strong{font-family:var(--display)}
+  footer{padding:56px 0 64px; border-top:2px solid var(--line)}
+  .pie{display:flex; flex-wrap:wrap; gap:16px 40px; justify-content:space-between; align-items:center}
+  .pie p{margin:0; color:var(--text-2)}
+</style>
+</head>
+<body>
+
+<header class="portada">
+  <img class="portada-fondo" src="portada-cataratas.jpg" alt="" width="960" height="641">
+  <div class="portada-velo" aria-hidden="true"></div>
+  <div class="portada-in">
+    <a class="brand" href="/" aria-label="Mapa sin gluten, inicio">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="3.5"/>
+        <path d="M32 10 L39 32 L32 30 L25 32Z" fill="#E8B84A"/>
+        <path d="M32 54 L25 32 L32 34 L39 32Z" fill="#7FD1C2"/>
+      </svg>
+      <span>Mapa sin gluten</span>
+    </a>
+
+    <div class="portada-grid">
+      <div class="circulo">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="24" fill="none" stroke="#F3EEE3" stroke-width="3.5"/>
+          <g class="aguja" style="transform-origin:32px 32px">
+            <path d="M32 10 L39 32 L32 30 L25 32Z" fill="#E8B84A"/>
+            <path d="M32 54 L25 32 L32 34 L39 32Z" fill="#7FD1C2"/>
+          </g>
+        </svg>
+        <h1>Mapa sin gluten</h1>
+        <p class="lema">Tu brújula sin gluten.</p>
+        <p class="bajada">Alojamientos sin gluten (sin TACC) · Un proyecto de Loomi</p>
+        <a class="btn btn-trigo" href="#sumate">Sumá tu alojamiento</a>
+      </div>
+
+      <div style="width:100%;max-width:420px">
+        <p class="regiones-tit">Estamos sumando alojamientos en</p>
+        <ul class="regiones">
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 26 L12 9 L17 18 L21 12 L29 26Z"/><path d="M8 26 L12 19 M16 26 L19 20 M22 26 L24 22" stroke="#E8B84A"/></svg></span><span><strong>Noroeste</strong><span>Jujuy, Salta</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8 H28"/><path d="M10 8 V22 M16 8 V24 M22 8 V22" stroke="#7FD1C2"/><path d="M4 27 Q10 23 16 27 T28 27"/></svg></span><span><strong>Noreste</strong><span>Misiones, Iguazú</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 24 Q9 12 16 20 T30 18"/><path d="M2 28 H30"/><circle cx="23" cy="8" r="3" stroke="#E8B84A"/></svg></span><span><strong>Centro</strong><span>Córdoba, Mendoza</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 13 Q8 9 13 13 T23 13 T30 13" stroke="#7FD1C2"/><path d="M3 19 Q8 15 13 19 T23 19 T30 19"/><path d="M3 25 Q8 21 13 25 T23 25 T30 25" stroke="#7FD1C2"/></svg></span><span><strong>Buenos Aires</strong><span>Costa Atlántica</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M2 24 L11 8 L16 16 L20 10 L30 24Z"/><path d="M4 28 H28" stroke="#7FD1C2"/></svg></span><span><strong>Patagonia</strong><span>Río Negro, Neuquén</span></span></li>
+        </ul>
+        <p style="margin:18px 0 0"><a href="#ficha" style="color:#F3EEE3">Ver ejemplos de fichas</a></p>
+      </div>
+    </div>
+
+    <p class="credito">Foto: Enaldo Valadares, <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.es">CC BY-SA 3.0</a>, desenfocada</p>
+  </div>
+</header>
+
+<main>
+
+  <section id="ficha">
+    <div class="wrap">
+      <h2>Así se ve cada ficha</h2>
+      <p class="intro">Cada alojamiento cuenta qué ofrece y cómo lo prepara. Nada de certificaciones ni garantías: los datos concretos para que cada viajero decida. Elegí una modalidad para ver un ejemplo.</p>
+
+      <div class="aviso-ejemplo"><span><strong>Son ejemplos.</strong> Estos alojamientos no existen: sirven para mostrar cómo se verá la ficha de cada tipo de servicio.</span></div>
+
+      <div class="tabs" role="tablist" aria-label="Modalidades de servicio">
+        <button type="button" class="tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true">Solo envasados</button>
+        <button type="button" class="tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false">Cocina con cuidados</button>
+        <button type="button" class="tab" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false">Área exclusiva</button>
+        <button type="button" class="tab" role="tab" id="tab-4" aria-controls="panel-4" aria-selected="false">Cocina 100 % sin gluten</button>
+        <button type="button" class="tab" role="tab" id="tab-5" aria-controls="panel-5" aria-selected="false">Cocina para huéspedes</button>
+      </div>
+
+      <article class="ficha" id="panel-1" role="tabpanel" aria-labelledby="tab-1">
+        <div class="fotos">
+          <div class="foto-principal">
+            <img src="hosteria-vista.jpg" alt="Hostería frente al mar, al atardecer" width="1200" height="670">
+            <span class="ilustrativa">Imagen ilustrativa</span>
+          </div>
+          <div class="fotos-chicas">
+            <img src="hosteria-habitacion.jpg" alt="Habitación con vista al mar" width="700" height="391" loading="lazy">
+            <img src="hosteria-recepcion.jpg" alt="Recepción" width="700" height="451" loading="lazy">
+            <img src="hosteria-deck.jpg" alt="Deck con reposeras frente a la playa" width="700" height="391" loading="lazy">
+          </div>
+        </div>
+        <div class="ficha-cab">
+          <div>
+            <h3>Hostería Ejemplo</h3>
+            <div class="lugar">Pinamar</div>
+            <span class="ficha-ej">Ejemplo, no es un alojamiento real</span>
+          </div>
+          <span class="categoria">Solo envasados</span>
+        </div>
+        <div class="ficha-cuerpo">
+          <div class="bloque clave">
+            <h4>Cómo se prepara</h4>
+            <ul><li>Productos industriales en envases individuales</li><li>No hay un área exclusiva de elaboración</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>En el desayuno, sin TACC</h4>
+            <ul><li>Panificados envasados y rotulados</li><li>Galletas y productos dulces</li><li>Frutas frescas</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>También ofrece</h4>
+            <ul><li>Leche deslactosada</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>Cómo avisar</h4>
+            <ul><li>Al hacer la reserva</li></ul>
+          </div>
+        </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
+        </div>
+        <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
+      </article>
+      <article class="ficha" id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+        <div class="ficha-cab">
+          <div>
+            <h3>Posada Ejemplo</h3>
+            <div class="lugar">Mar de las Pampas, Villa Gesell</div>
+            <span class="ficha-ej">Ejemplo, no es un alojamiento real</span>
+          </div>
+          <span class="categoria">Cocina con cuidados</span>
+        </div>
+        <div class="ficha-cuerpo">
+          <div class="bloque clave">
+            <h4>Cómo se prepara</h4>
+            <ul><li>Se elabora en la cocina general, con utensilios y recipientes exclusivos</li><li>Superficies limpias antes de preparar lo sin TACC</li><li>Se cocina primero lo sin TACC</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>En el desayuno, sin TACC</h4>
+            <ul><li>Budín y panificados caseros sin TACC</li><li>Productos envasados y rotulados</li><li>Frutas frescas</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>También ofrece</h4>
+            <ul><li>Leche deslactosada y bebidas vegetales</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>Cómo avisar</h4>
+            <ul><li>Con 2 días de anticipación</li></ul>
+          </div>
+        </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
+        </div>
+        <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
+      </article>
+      <article class="ficha" id="panel-3" role="tabpanel" aria-labelledby="tab-3" hidden>
+        <div class="fotos">
+          <div class="foto-principal">
+            <img src="bodega-vista.jpg" alt="Suites entre viñedos con la cordillera de fondo" width="1200" height="670" loading="lazy">
+            <span class="ilustrativa">Imagen ilustrativa</span>
+          </div>
+          <div class="fotos-chicas">
+            <img src="bodega-habitacion.jpg" alt="Suite con vista a los viñedos" width="700" height="391" loading="lazy">
+            <img src="bodega-pileta.jpg" alt="Pileta frente a los viñedos" width="700" height="391" loading="lazy">
+            <img src="bodega-cava.jpg" alt="Cava con barricas" width="700" height="391" loading="lazy">
+          </div>
+        </div>
+        <div class="ficha-cab">
+          <div>
+            <h3>Bodega Ejemplo</h3>
+            <div class="lugar">Valle de Uco, Mendoza</div>
+            <span class="ficha-ej">Ejemplo, no es un alojamiento real</span>
+          </div>
+          <span class="categoria">Área exclusiva</span>
+        </div>
+        <div class="ficha-cuerpo">
+          <div class="bloque clave">
+            <h4>Cómo se prepara</h4>
+            <ul><li>Hay un sector de la cocina solo para elaborar sin TACC</li><li>Horno, tablas y utensilios exclusivos</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>En el desayuno, sin TACC</h4>
+            <ul><li>Panificados caseros sin TACC</li><li>Productos envasados y rotulados</li><li>Frutas de estación</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>Otras comidas</h4>
+            <ul><li>Almuerzo y cena sin TACC en el restaurante, a pedido</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>También ofrece</h4>
+            <ul><li>Leche deslactosada y bebidas vegetales</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>Cómo avisar</h4>
+            <ul><li>Al hacer la reserva</li></ul>
+          </div>
+        </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
+        </div>
+        <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
+      </article>
+      <article class="ficha" id="panel-4" role="tabpanel" aria-labelledby="tab-4" hidden>
+        <div class="ficha-cab">
+          <div>
+            <h3>Casa de Huéspedes Ejemplo</h3>
+            <div class="lugar">Tilcara, Jujuy</div>
+            <span class="ficha-ej">Ejemplo, no es un alojamiento real</span>
+            <div class="sello"><svg width="18" height="18" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="5"/><path d="M32 10 L39 32 L32 30 L25 32Z" fill="currentColor"/></svg>Cumple criterios completos</div>
+          </div>
+          <span class="categoria">Cocina 100 % sin gluten</span>
+        </div>
+        <div class="ficha-cuerpo">
+          <div class="bloque clave">
+            <h4>Cómo se prepara</h4>
+            <ul><li>En la cocina no entran productos con gluten</li><li>Todo lo que se sirve es sin TACC, para todos los huéspedes</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>En el desayuno</h4>
+            <ul><li>Todo el desayuno es sin TACC</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>También ofrece</h4>
+            <ul><li>Leche deslactosada y bebidas vegetales</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>Cómo avisar</h4>
+            <ul><li>No hace falta: siempre es sin TACC</li></ul>
+          </div>
+        </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
+        </div>
+        <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
+      </article>
+      <article class="ficha" id="panel-5" role="tabpanel" aria-labelledby="tab-5" hidden>
+        <div class="fotos">
+          <div class="foto-principal">
+            <img src="glamping-vista.jpg" alt="Glamping en el bosque, junto al río y la cordillera" width="1200" height="670" loading="lazy">
+            <span class="ilustrativa">Imagen ilustrativa</span>
+          </div>
+          <div class="fotos-chicas">
+            <img src="glamping-domo.jpg" alt="Domo con cama y salamandra" width="700" height="391" loading="lazy">
+            <img src="glamping-despensa.jpg" alt="Quincho con barra y despensa" width="700" height="775" loading="lazy">
+            <img src="glamping-fogon.jpg" alt="Carpas y domos alrededor del fogón" width="700" height="391" loading="lazy">
+          </div>
+        </div>
+        <div class="ficha-cab">
+          <div>
+            <h3>Glamping Ejemplo</h3>
+            <div class="lugar">El Bolsón, Río Negro</div>
+            <span class="ficha-ej">Ejemplo, no es un alojamiento real</span>
+          </div>
+          <span class="categoria">Cocina para huéspedes</span>
+        </div>
+        <div class="ficha-cuerpo">
+          <div class="bloque clave">
+            <h4>Cómo funciona</h4>
+            <ul><li>No se sirve comida</li><li>En el quincho hay una cocina equipada para que cocines vos</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>Despensa en el alojamiento</h4>
+            <ul><li>Productos básicos sin TACC, envasados y rotulados, en la despensa del quincho</li><li>Leche deslactosada y bebidas vegetales</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>Para comprar cerca</h4>
+            <ul><li>Dietética con productos sin TACC en el pueblo, a 6 km</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>Cómo avisar</h4>
+            <ul><li>Con 7 días de anticipación, para tener lista la despensa</li></ul>
+          </div>
+        </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
+        </div>
+        <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="banda" id="sumate">
+    <div class="wrap narrow">
+      <h2>Sumá tu alojamiento</h2>
+      <p class="intro">Aparecer es gratis. Lo que publicamos lo aprobás vos antes.</p>
+
+      <ol class="pasos">
+        <li><strong>Contestás tres preguntas</strong><span>Toma un par de minutos.</span></li>
+        <li><strong>Te mandamos tu ficha</strong><span>Por WhatsApp, para que la revises.</span></li>
+        <li><strong>La aprobás y se publica</strong><span>Y la actualizamos cada temporada.</span></li>
+      </ol>
+
+      <form id="form" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="alojamiento">Nombre del alojamiento</label>
+            <input id="alojamiento" name="alojamiento" type="text" maxlength="120" required autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="localidad">Localidad</label>
+            <input id="localidad" name="localidad" type="text" maxlength="80" required placeholder="Ej.: Mar de las Pampas">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="partido">Partido</label>
+          <select id="partido" name="partido">
+            <option value="">Elegí uno</option>
+            <option>La Costa</option>
+            <option>Pinamar</option>
+            <option>Villa Gesell</option>
+            <option>Mar Chiquita</option>
+            <option>General Pueyrredon</option>
+            <option>General Alvarado</option>
+            <option>Lobería</option>
+            <option>Necochea</option>
+            <option>San Cayetano</option>
+            <option>Tres Arroyos</option>
+            <option>Coronel Dorrego</option>
+            <option>Monte Hermoso</option>
+            <option>Coronel Rosales</option>
+            <option>Otra zona del país</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <div class="q"><span class="num">1</span>¿Sirven comida a los huéspedes?</div>
+          <div class="opts" role="radiogroup">
+            <label class="opt"><input type="radio" name="comida" value="sirve" required> Sí, servimos desayuno u otras comidas</label>
+            <label class="opt"><input type="radio" name="comida" value="cocina_equipada"> No, pero las unidades tienen cocina equipada</label>
+            <label class="opt"><input type="radio" name="comida" value="no"> No</label>
+          </div>
+        </div>
+
+        <div class="field" id="campo-comercios" hidden>
+          <label for="comercios">¿Dónde compran sus huéspedes productos sin TACC?</label>
+          <span class="hint">Nombre del comercio y a cuántos km queda. Por ejemplo: Dietética Sol, a 2 km.</span>
+          <textarea id="comercios" name="comercios" maxlength="500"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="ofrece"><span class="num">2</span>¿Ofrecen opciones sin gluten o sin lactosa? Contanos cómo.</label>
+          <span class="hint">Por ejemplo: productos envasados, desayuno con aviso, cocina con cuidados, leche sin lactosa.</span>
+          <textarea id="ofrece" name="ofrece" maxlength="1000"></textarea>
+        </div>
+
+        <div class="field">
+          <div class="q"><span class="num">3</span>¿Querés aparecer gratis en el mapa?</div>
+          <label class="opt"><input type="checkbox" id="permiso" name="permiso" required> Sí, quiero aparecer. Sé que se publica según lo que informamos nosotros.</label>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="contacto_nombre">Tu nombre</label>
+            <input id="contacto_nombre" name="contacto_nombre" type="text" maxlength="80" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="whatsapp">WhatsApp</label>
+            <input id="whatsapp" name="whatsapp" type="tel" maxlength="30" required autocomplete="tel" placeholder="Ej.: 2254 123456">
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="email">Email <span class="hint">(opcional)</span></label>
+            <input id="email" name="email" type="email" maxlength="120" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="web">Web o Instagram <span class="hint">(opcional)</span></label>
+            <input id="web" name="web" type="text" maxlength="200">
+          </div>
+        </div>
+
+        <div class="hp" aria-hidden="true"><label>No completar <input type="text" name="sitio" tabindex="-1" autocomplete="off"></label></div>
+
+        <div id="msg" class="msg" role="status"></div>
+        <button type="submit" id="btn" class="btn btn-trigo">Quiero aparecer</button>
+        <p class="hint" style="margin:0">Usamos estos datos solo para armar tu ficha y escribirte.</p>
+      </form>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <p class="aviso"><strong>Importante:</strong> la información de cada alojamiento es la que informó el propio alojamiento. No es una certificación. Ante cualquier duda, consultá directamente antes de reservar.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap pie">
+    <p><strong style="color:var(--text)">Mapa sin gluten</strong>, un proyecto de <a href="https://loomisuite.net" target="_blank" rel="noopener">Loomi</a></p>
+    <p>Escribinos a <a href="mailto:hola@mapasingluten.app">hola@mapasingluten.app</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var SUPABASE_URL = "https://vnfgitgadadjjjciftsa.supabase.co";
+  var SUPABASE_KEY = "sb_publishable_IKbP0ieyJfrtdguY39N7wg_RMjN_CxH";
+
+  var form = document.getElementById("form");
+  var msg = document.getElementById("msg");
+  var btn = document.getElementById("btn");
+  var campoComercios = document.getElementById("campo-comercios");
+
+  function show(type, text){ msg.className = "msg " + type; msg.textContent = text; }
+  function val(name){ var el = form.elements[name]; return el && el.value ? el.value.trim() : ""; }
+
+  form.querySelectorAll('input[name="comida"]').forEach(function(r){
+    r.addEventListener("change", function(){ campoComercios.hidden = (r.value !== "cocina_equipada"); });
+  });
+
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      tabs.forEach(function(o){
+        var on = (o === t);
+        o.setAttribute("aria-selected", on ? "true" : "false");
+        document.getElementById(o.getAttribute("aria-controls")).hidden = !on;
+      });
+    });
+  });
+
+  document.querySelectorAll('[data-ej]').forEach(function(b){
+    b.addEventListener("click", function(){
+      var nota = b.closest('.contacto').querySelector('.nota-contacto');
+      nota.textContent = "Es un ejemplo: en una ficha real, este botón abre el " + (b.textContent.trim().indexOf("WhatsApp")>-1 ? "WhatsApp" : b.textContent.trim()) + " del alojamiento.";
+      nota.classList.add("activa");
+    });
+  });
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    if (val("sitio")) return;
+
+    var comida = form.querySelector('input[name="comida"]:checked');
+    if (!val("alojamiento") || !val("localidad")) { show("err", "Completá el nombre del alojamiento y la localidad."); return; }
+    if (!comida) { show("err", "Contestá la pregunta 1."); return; }
+    if (!document.getElementById("permiso").checked) { show("err", "Para aparecer en el mapa, marcá la pregunta 3."); return; }
+    if (val("whatsapp").replace(/\D/g,"").length < 6) { show("err", "Dejanos un WhatsApp para escribirte."); return; }
+
+    var data = {
+      alojamiento: val("alojamiento"),
+      localidad: val("localidad"),
+      partido: val("partido") || null,
+      comida: comida.value,
+      ofrece: val("ofrece") || null,
+      comercios: comida.value === "cocina_equipada" ? (val("comercios") || null) : null,
+      permiso: true,
+      contacto_nombre: val("contacto_nombre") || null,
+      whatsapp: val("whatsapp"),
+      email: val("email") || null,
+      web: val("web") || null
+    };
+
+    btn.disabled = true; btn.textContent = "Enviando…";
+    fetch(SUPABASE_URL + "/rest/v1/mapa_solicitudes", {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(data)
+    }).then(function(r){
+      if (!r.ok) throw new Error(r.status);
+      form.reset(); campoComercios.hidden = true;
+      show("ok", "¡Listo! Te escribimos por WhatsApp para armar tu ficha antes de publicarla.");
+      btn.textContent = "Enviado";
+    }).catch(function(){
+      show("err", "No se pudo enviar. Probá de nuevo en un rato.");
+      btn.disabled = false; btn.textContent = "Quiero aparecer";
+    });
+  });
+})();
+</script>
+</body>
+</html>

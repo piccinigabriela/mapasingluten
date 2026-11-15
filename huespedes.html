@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa sin gluten · Alojamientos sin TACC en Argentina</title>
+<meta name="description" content="Alojamientos sin gluten (sin TACC) en Argentina, según lo que informa cada alojamiento. ¿Tenés un alojamiento? Sumalo gratis.">
+<meta property="og:title" content="Mapa sin gluten · Tu brújula sin gluten">
+<meta property="og:description" content="Alojamientos sin gluten (sin TACC) en Argentina. ¿Tenés un alojamiento? Sumalo gratis al mapa.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mapasingluten.app/huespedes">
+<meta name="theme-color" content="#0E2A2F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230E2A2F'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%23F3EEE3' stroke-width='3'/%3E%3Cpath d='M32 10 L39 32 L32 30 L25 32Z' fill='%23E8B84A'/%3E%3Cpath d='M32 54 L25 32 L32 34 L39 32Z' fill='%237FD1C2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E2A2F;          /* mar de noche */
+    --bg-2:#123339;
+    --surface:#163D44;
+    --line:#2C5A61;
+    --text:#F3EEE3;        /* espuma */
+    --text-2:#D9E3DF;
+    --wheat:#E8B84A;       /* trigo: aguja norte */
+    --wheat-ink:#1C1404;
+    --foam:#7FD1C2;        /* agua */
+    --foam-soft:#1D4A4C;
+    --error:#FFB4A6;
+    --display:"Bricolage Grotesque", system-ui, sans-serif;
+    --body:"Atkinson Hyperlegible", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#E6F0EC; --bg-2:#DCE9E4; --surface:#FFFFFF; --line:#B7CCC5;
+      --text:#0E2A2F; --text-2:#1F4248;
+      --wheat:#8C6400; --wheat-ink:#FFFFFF;
+      --foam:#0E6B62; --foam-soft:#D3EBE4;
+      --error:#A3241A;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#E6F0EC; --bg-2:#DCE9E4; --surface:#FFFFFF; --line:#B7CCC5;
+    --text:#0E2A2F; --text-2:#1F4248;
+    --wheat:#8C6400; --wheat-ink:#FFFFFF;
+    --foam:#0E6B62; --foam-soft:#D3EBE4;
+    --error:#A3241A;
+  }
+
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--body); font-size:18px; line-height:1.6;
+  }
+  a{color:var(--foam); font-weight:700; text-underline-offset:3px}
+  :focus-visible{outline:3px solid var(--wheat); outline-offset:3px; border-radius:6px}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px}
+  .narrow{max-width:680px}
+
+  h1,h2,h3{font-family:var(--display); margin:0; letter-spacing:-0.015em}
+
+  /* ---------- Marca ---------- */
+  .brand{display:flex; align-items:center; gap:12px; padding:28px 0 0; text-decoration:none; color:var(--text); width:max-content}
+  .brand svg{width:40px; height:40px}
+  .brand span{font-family:var(--display); font-weight:700; font-size:21px}
+
+  /* ---------- Portada ---------- */
+  .hero{display:grid; gap:48px; padding:64px 0 88px; align-items:center}
+  @media (min-width:900px){ .hero{grid-template-columns:1.2fr .8fr; padding:96px 0 120px} }
+  .hero h1{font-size:clamp(46px,9.5vw,92px); font-weight:800; line-height:.98}
+  .hero .sub{font-size:21px; color:var(--text-2); margin:24px 0 0; max-width:30ch}
+  .hero .por{font-size:16px; color:var(--text-2); margin:10px 0 0}
+  .acciones{display:flex; flex-wrap:wrap; gap:14px; margin-top:36px}
+  .btn{
+    display:inline-block; font:inherit; font-weight:700; font-size:18px; text-decoration:none;
+    padding:15px 24px; border-radius:999px; border:2px solid transparent; cursor:pointer;
+  }
+  .btn-trigo{background:var(--wheat); color:var(--wheat-ink)}
+  .btn-linea{border-color:var(--text-2); color:var(--text)}
+
+  .rosa{justify-self:center; width:min(320px,78vw); aspect-ratio:1}
+  .rosa svg{width:100%; height:100%; overflow:visible}
+  .aguja{animation:orientar 2.4s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes orientar{
+    0%{transform:rotate(-130deg)} 55%{transform:rotate(22deg)} 75%{transform:rotate(-8deg)} 100%{transform:rotate(0)}
+  }
+  @media (prefers-reduced-motion: reduce){ .aguja{animation:none} }
+
+  /* ---------- Portada con foto ---------- */
+  .portada{position:relative; overflow:hidden; color:#F3EEE3; background:#0E2A2F}
+  .portada-fondo{position:absolute; inset:-24px; width:calc(100% + 48px); height:calc(100% + 48px); object-fit:cover; filter:blur(4px)}
+  .portada-velo{position:absolute; inset:0; background:rgba(14,42,47,.38)}
+  .portada-in{position:relative; max-width:1080px; margin:0 auto; padding:24px 20px 28px}
+  .portada .brand{color:#F3EEE3; padding-top:4px}
+  .portada-grid{display:grid; gap:36px; align-items:center; justify-items:center; padding:36px 0 20px}
+  @media (min-width:900px){ .portada-grid{grid-template-columns:auto 1fr; justify-items:start; gap:56px; padding:56px 0 36px} }
+  .circulo{
+    width:min(460px,86vw); aspect-ratio:1; border-radius:50%; box-sizing:border-box; padding:0 9%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    background:rgba(14,42,47,.72); border:2px solid rgba(243,238,227,.55);
+  }
+  @supports ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
+    .circulo{background:rgba(14,42,47,.58); backdrop-filter:blur(64px) saturate(.9); -webkit-backdrop-filter:blur(64px) saturate(.9)}
+  }
+  .circulo svg{width:56px; height:56px}
+  .circulo h1{font-size:clamp(34px,6.4vw,54px); font-weight:800; line-height:1; margin-top:14px; color:#F3EEE3}
+  .circulo .lema{font-size:clamp(18px,2.6vw,22px); margin:10px 0 0}
+  .circulo .bajada{font-size:15px; margin:8px 0 0}
+  .circulo .btn{margin-top:22px; font-size:17px; padding:13px 22px}
+  .regiones{list-style:none; margin:0; padding:0; display:grid; gap:14px; width:100%; max-width:420px}
+  .regiones-tit{font-family:var(--display); font-weight:700; font-size:18px; margin:0 0 4px}
+  .region{display:flex; align-items:center; gap:14px}
+  .region .ico{width:56px; height:56px; flex:none; border-radius:50%; display:grid; place-items:center; background:rgba(14,42,47,.8); border:2px solid #F3EEE3}
+  .region .ico svg{width:28px; height:28px}
+  .region strong{display:block; font-family:var(--display); font-size:22px; line-height:1.15}
+  .region span{display:block; font-size:15px}
+  @media (min-width:900px){
+    .regiones li:nth-child(2){margin-left:0}
+    .regiones li:nth-child(3){margin-left:44px}
+    .regiones li:nth-child(4){margin-left:64px}
+    .regiones li:nth-child(5){margin-left:64px}
+    .regiones li:nth-child(6){margin-left:44px}
+  }
+  .credito{font-size:13px; text-align:right; margin:8px 0 0}
+  .credito a{color:#F3EEE3}
+  .portada .btn-trigo:focus-visible,.portada a:focus-visible{outline-color:#E8B84A}
+
+  /* ---------- Contacto en fichas ---------- */
+  .contacto{padding:20px 32px 6px; border-top:1px solid var(--line)}
+  .contacto h4{margin:0 0 12px; font-family:var(--display); font-size:19px}
+  .contacto-btns{display:flex; flex-wrap:wrap; gap:10px}
+  .cbtn{display:inline-flex; align-items:center; gap:8px; font:inherit; font-weight:700; font-size:16px; min-height:46px; padding:0 18px; border-radius:999px; cursor:pointer; border:2px solid var(--foam); background:transparent; color:var(--text)}
+  .cbtn svg{width:20px; height:20px}
+  .cbtn.principal{background:var(--wheat); border-color:var(--wheat); color:var(--wheat-ink)}
+  .nota-contacto{margin:12px 0 14px; font-size:15px; color:var(--text-2)}
+  .nota-contacto.activa{color:var(--text); font-weight:700}
+
+  /* ---------- Secciones ---------- */
+  section{padding:88px 0}
+  .banda{background:var(--bg-2)}
+  h2{font-size:clamp(32px,5.4vw,48px); font-weight:700; line-height:1.05}
+  .intro{color:var(--text-2); font-size:19px; margin:16px 0 0; max-width:56ch}
+
+  /* ---------- Recorrido de la Costa ---------- */
+  .costa{display:grid; gap:48px; margin-top:48px}
+  @media (min-width:900px){ .costa{grid-template-columns:.9fr 1.1fr; align-items:start} }
+  .recorrido{list-style:none; margin:0; padding:0 0 0 30px; position:relative}
+  .recorrido::before{
+    content:""; position:absolute; left:9px; top:10px; bottom:10px; width:4px; border-radius:4px;
+    background:repeating-linear-gradient(var(--foam) 0 10px, transparent 10px 18px);
+  }
+  .recorrido li{position:relative; padding:0 0 26px}
+  .recorrido li:last-child{padding-bottom:0}
+  .recorrido li::before{
+    content:""; position:absolute; left:-30px; top:6px; width:22px; height:22px; border-radius:50%;
+    background:var(--bg-2); border:4px solid var(--foam);
+  }
+  .recorrido strong{font-family:var(--display); font-size:22px; display:block; line-height:1.2}
+  .recorrido span{color:var(--text-2)}
+  .nota-costa{
+    background:var(--surface); border-radius:28px; padding:32px;
+    border:2px solid var(--line);
+  }
+  .nota-costa h3{font-size:28px; line-height:1.15}
+  .nota-costa p{color:var(--text-2); margin:14px 0 0}
+
+  /* ---------- Ficha de ejemplo ---------- */
+  .ficha{
+    margin-top:48px; background:var(--surface); border-radius:28px; overflow:hidden;
+    border:2px solid var(--line); max-width:760px;
+  }
+  .ficha-cab{padding:28px 32px; border-bottom:2px solid var(--line); display:flex; flex-wrap:wrap; gap:12px 20px; align-items:baseline; justify-content:space-between}
+  .ficha-cab h3{font-size:28px}
+  .ficha-cab .lugar{color:var(--text-2)}
+  .categoria{
+    display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:16px;
+    background:var(--foam-soft); color:var(--text); padding:6px 14px; border-radius:999px;
+  }
+  .categoria::before{content:""; width:10px; height:10px; border-radius:50%; background:var(--foam)}
+  .ficha-cuerpo{padding:8px 32px 28px}
+  .bloque{padding:20px 0; border-bottom:1px solid var(--line)}
+  .bloque:last-child{border-bottom:0}
+  .bloque h4{margin:0 0 8px; font-family:var(--display); font-size:19px}
+  .bloque ul{margin:0; padding-left:20px; color:var(--text-2)}
+  .bloque li{margin:2px 0}
+  .bloque.clave{border-left:5px solid var(--wheat); margin:12px 0 4px; padding:16px 20px; background:var(--bg-2); border-radius:0 16px 16px 0; border-bottom:0}
+  .ficha-pie{padding:18px 32px; background:var(--bg-2); color:var(--text-2); font-size:16px}
+  .ejemplo{font-style:italic; color:var(--text-2); margin:14px 0 0; font-size:16px}
+  .aviso-ejemplo{display:flex; gap:12px; align-items:flex-start; margin-top:32px; max-width:760px; background:var(--foam-soft); border:2px solid var(--foam); border-radius:18px; padding:16px 20px; font-size:17px}
+  .aviso-ejemplo strong{font-family:var(--display)}
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; margin-top:28px; max-width:760px}
+  .tab{font:inherit; font-weight:700; font-size:16px; min-height:44px; padding:0 18px; border-radius:999px; border:2px solid var(--line); background:transparent; color:var(--text); cursor:pointer}
+  .tab:hover{border-color:var(--wheat)}
+  .tab[aria-selected="true"]{background:var(--wheat); border-color:var(--wheat); color:var(--wheat-ink)}
+  .ficha{margin-top:20px}
+  .fotos{display:grid; gap:4px; background:var(--line)}
+  .foto-principal{position:relative}
+  .fotos img{display:block; width:100%; height:auto; object-fit:cover}
+  .foto-principal img{aspect-ratio:16/8}
+  .fotos-chicas{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px}
+  .fotos-chicas img{aspect-ratio:4/3}
+  .ilustrativa{position:absolute; left:14px; bottom:14px; background:rgba(14,42,47,.85); color:#F3EEE3; font-weight:700; font-size:14px; padding:6px 12px; border-radius:999px}
+  .ficha-ej{display:inline-block; margin-top:6px; font-size:14px; font-weight:700; border:2px dashed var(--text-2); padding:2px 10px; border-radius:999px}
+  .sello{display:flex; align-items:center; gap:8px; margin-top:8px; font-weight:700; font-size:15px; color:var(--wheat)}
+
+  /* ---------- Cómo funciona ---------- */
+  .pasos{list-style:none; padding:0; margin:40px 0 56px; display:grid; gap:28px; counter-reset:paso}
+  @media (min-width:760px){ .pasos{grid-template-columns:repeat(3,1fr)} }
+  .pasos li{counter-increment:paso; padding-top:58px; position:relative}
+  .pasos li::before{
+    content:counter(paso); position:absolute; top:0; left:0; width:44px; height:44px; border-radius:50%;
+    display:grid; place-items:center; font-family:var(--display); font-weight:800; font-size:20px;
+    background:var(--wheat); color:var(--wheat-ink);
+  }
+  .pasos strong{display:block; font-family:var(--display); font-size:21px; line-height:1.2}
+  .pasos span{color:var(--text-2)}
+
+  /* ---------- Formulario ---------- */
+  form{display:grid; gap:26px; background:var(--surface); border:2px solid var(--line); border-radius:28px; padding:32px}
+  @media (max-width:520px){ form{padding:22px} }
+  .field{display:grid; gap:8px}
+  label,.q{font-weight:700; font-size:17px}
+  .hint{color:var(--text-2); font-size:16px; font-weight:400}
+  input[type=text],input[type=tel],input[type=email],select,textarea{
+    width:100%; font:inherit; font-size:17px; color:var(--text); background:var(--bg);
+    border:2px solid var(--line); border-radius:14px; padding:13px 15px;
+  }
+  textarea{min-height:110px; resize:vertical}
+  ::placeholder{color:var(--text-2); opacity:.7}
+  input:focus,select:focus,textarea:focus{outline:none; border-color:var(--wheat)}
+  .row{display:grid; gap:20px}
+  @media (min-width:620px){ .row{grid-template-columns:1fr 1fr} }
+  .opts{display:grid; gap:10px}
+  .opt{
+    display:flex; gap:12px; align-items:flex-start; padding:14px 16px; cursor:pointer; font-weight:400;
+    background:var(--bg); border:2px solid var(--line); border-radius:14px;
+  }
+  .opt:has(input:checked){border-color:var(--foam); background:var(--foam-soft)}
+  .opt input{margin:4px 0 0; width:20px; height:20px; flex:none; accent-color:var(--foam)}
+  .num{
+    display:inline-grid; place-items:center; width:30px; height:30px; margin-right:10px; border-radius:50%;
+    background:var(--wheat); color:var(--wheat-ink); font-family:var(--display); font-weight:800; font-size:15px; vertical-align:1px;
+  }
+  form .btn{width:100%; font-size:19px; padding:17px}
+  .msg{display:none; padding:18px 20px; border-radius:16px; font-weight:700}
+  .msg.ok{display:block; background:var(--foam-soft); border:2px solid var(--foam)}
+  .msg.err{display:block; color:var(--error); border:2px solid var(--error)}
+  .hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+
+  /* ---------- Viajeros ---------- */
+  .viajeros{display:grid; gap:32px; align-items:center}
+  @media (min-width:860px){ .viajeros{grid-template-columns:1fr 1fr} }
+  .manual{
+    display:block; text-decoration:none; color:var(--text); background:var(--surface);
+    border:2px solid var(--line); border-radius:28px; padding:30px;
+  }
+  .manual:hover{border-color:var(--foam)}
+  .manual strong{display:block; font-family:var(--display); font-size:26px; line-height:1.15}
+  .manual span{display:block; color:var(--text-2); margin-top:8px}
+  .manual em{display:inline-block; margin-top:18px; font-style:normal; font-weight:700; color:var(--foam)}
+
+  /* ---------- Aviso y pie ---------- */
+  .aviso{border-left:5px solid var(--wheat); padding:6px 0 6px 22px; font-size:18px; max-width:62ch}
+  .aviso strong{font-family:var(--display)}
+  footer{padding:56px 0 64px; border-top:2px solid var(--line)}
+  .pie{display:flex; flex-wrap:wrap; gap:16px 40px; justify-content:space-between; align-items:center}
+  .pie p{margin:0; color:var(--text-2)}
+</style>
+</head>
+<body>
+
+<header class="portada">
+  <img class="portada-fondo" src="portada-cataratas.jpg" alt="" width="960" height="641">
+  <div class="portada-velo" aria-hidden="true"></div>
+  <div class="portada-in">
+    <a class="brand" href="/huespedes" aria-label="Mapa sin gluten, inicio">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="3.5"/>
+        <path d="M32 10 L39 32 L32 30 L25 32Z" fill="#E8B84A"/>
+        <path d="M32 54 L25 32 L32 34 L39 32Z" fill="#7FD1C2"/>
+      </svg>
+      <span>Mapa sin gluten</span>
+    </a>
+
+    <div class="portada-grid">
+      <div class="circulo">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="24" fill="none" stroke="#F3EEE3" stroke-width="3.5"/>
+          <g class="aguja" style="transform-origin:32px 32px">
+            <path d="M32 10 L39 32 L32 30 L25 32Z" fill="#E8B84A"/>
+            <path d="M32 54 L25 32 L32 34 L39 32Z" fill="#7FD1C2"/>
+          </g>
+        </svg>
+        <h1>Mapa sin gluten</h1>
+        <p class="lema">Tu brújula sin gluten.</p>
+        <p class="bajada">Alojamientos sin gluten (sin TACC) · Un proyecto de Loomi</p>
+        <a class="btn btn-trigo" href="https://loomisuite.net/manual?m=sintacc" target="_blank" rel="noopener">Leer el manual sin gluten</a>
+      </div>
+
+      <div style="width:100%;max-width:420px">
+        <p class="regiones-tit">Estamos sumando alojamientos en</p>
+        <ul class="regiones">
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 26 L12 9 L17 18 L21 12 L29 26Z"/><path d="M8 26 L12 19 M16 26 L19 20 M22 26 L24 22" stroke="#E8B84A"/></svg></span><span><strong>Noroeste</strong><span>Jujuy, Salta</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8 H28"/><path d="M10 8 V22 M16 8 V24 M22 8 V22" stroke="#7FD1C2"/><path d="M4 27 Q10 23 16 27 T28 27"/></svg></span><span><strong>Noreste</strong><span>Misiones, Iguazú</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 24 Q9 12 16 20 T30 18"/><path d="M2 28 H30"/><circle cx="23" cy="8" r="3" stroke="#E8B84A"/></svg></span><span><strong>Centro</strong><span>Córdoba, Mendoza</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 13 Q8 9 13 13 T23 13 T30 13" stroke="#7FD1C2"/><path d="M3 19 Q8 15 13 19 T23 19 T30 19"/><path d="M3 25 Q8 21 13 25 T23 25 T30 25" stroke="#7FD1C2"/></svg></span><span><strong>Buenos Aires</strong><span>Costa Atlántica</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M2 24 L11 8 L16 16 L20 10 L30 24Z"/><path d="M4 28 H28" stroke="#7FD1C2"/></svg></span><span><strong>Patagonia</strong><span>Río Negro, Neuquén</span></span></li>
+        </ul>
+        <p style="margin:18px 0 0"><a href="/sumate" style="color:#F3EEE3">¿Tenés un alojamiento? Sumalo gratis</a></p>
+      </div>
+    </div>
+
+    <p class="credito">Foto: Enaldo Valadares, <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.es">CC BY-SA 3.0</a>, desenfocada</p>
+  </div>
+</header>
+
+<main>
+
+    <section>
+    <div class="wrap viajeros">
+      <div>
+        <h2>¿Sos celíaco?</h2>
+        <p class="intro">Mientras sumamos alojamientos, te dejamos una guía para viajar con más tranquilidad.</p>
+      </div>
+      <a class="manual" href="https://loomisuite.net/manual?m=sintacc" target="_blank" rel="noopener">
+        <strong>Manual “Sin gluten, sin lactosa”</strong>
+        <span>Qué preguntar antes de reservar y cómo avisar tu condición.</span>
+        <em>Leer el manual</em>
+      </a>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <p class="aviso"><strong>Importante:</strong> la información de cada alojamiento es la que informó el propio alojamiento. No es una certificación. Ante cualquier duda, consultá directamente antes de reservar.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap pie">
+    <p><strong style="color:var(--text)">Mapa sin gluten</strong>, un proyecto de <a href="https://loomisuite.net" target="_blank" rel="noopener">Loomi</a></p>
+    <p>Escribinos a <a href="mailto:hola@mapasingluten.app">hola@mapasingluten.app</a></p>
+  </div>
+</footer>
+
+
+</body>
+</html>
