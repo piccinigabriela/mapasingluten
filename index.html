@@ -147,6 +147,13 @@
   .tab:hover{border-color:var(--wheat)}
   .tab[aria-selected="true"]{background:var(--wheat); border-color:var(--wheat); color:var(--wheat-ink)}
   .ficha{margin-top:20px}
+  .fotos{display:grid; gap:4px; background:var(--line)}
+  .foto-principal{position:relative}
+  .fotos img{display:block; width:100%; height:auto; object-fit:cover}
+  .foto-principal img{aspect-ratio:16/8}
+  .fotos-chicas{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px}
+  .fotos-chicas img{aspect-ratio:4/3}
+  .ilustrativa{position:absolute; left:14px; bottom:14px; background:rgba(14,42,47,.85); color:#F3EEE3; font-weight:700; font-size:14px; padding:6px 12px; border-radius:999px}
   .ficha-ej{display:inline-block; margin-top:6px; font-size:14px; font-weight:700; border:2px dashed var(--text-2); padding:2px 10px; border-radius:999px}
   .sello{display:flex; align-items:center; gap:8px; margin-top:8px; font-weight:700; font-size:15px; color:var(--wheat)}
 
@@ -302,6 +309,17 @@
       </div>
 
       <article class="ficha" id="panel-1" role="tabpanel" aria-labelledby="tab-1">
+        <div class="fotos">
+          <div class="foto-principal">
+            <img src="hosteria-vista.jpg" alt="Hostería frente al mar, al atardecer" width="1200" height="670">
+            <span class="ilustrativa">Imagen ilustrativa</span>
+          </div>
+          <div class="fotos-chicas">
+            <img src="hosteria-habitacion.jpg" alt="Habitación con vista al mar" width="700" height="391" loading="lazy">
+            <img src="hosteria-recepcion.jpg" alt="Recepción" width="700" height="451" loading="lazy">
+            <img src="hosteria-deck.jpg" alt="Deck con reposeras frente a la playa" width="700" height="391" loading="lazy">
+          </div>
+        </div>
         <div class="ficha-cab">
           <div>
             <h3>Hostería Ejemplo</h3>
