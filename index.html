@@ -83,11 +83,60 @@
 
   .rosa{justify-self:center; width:min(320px,78vw); aspect-ratio:1}
   .rosa svg{width:100%; height:100%; overflow:visible}
-  .aguja{transform-origin:160px 160px; animation:orientar 2.4s cubic-bezier(.2,.8,.2,1) both}
+  .aguja{animation:orientar 2.4s cubic-bezier(.2,.8,.2,1) both}
   @keyframes orientar{
     0%{transform:rotate(-130deg)} 55%{transform:rotate(22deg)} 75%{transform:rotate(-8deg)} 100%{transform:rotate(0)}
   }
   @media (prefers-reduced-motion: reduce){ .aguja{animation:none} }
+
+  /* ---------- Portada con foto ---------- */
+  .portada{position:relative; overflow:hidden; color:#F3EEE3; background:#0E2A2F}
+  .portada-fondo{position:absolute; inset:-24px; width:calc(100% + 48px); height:calc(100% + 48px); object-fit:cover; filter:blur(4px)}
+  .portada-velo{position:absolute; inset:0; background:rgba(14,42,47,.38)}
+  .portada-in{position:relative; max-width:1080px; margin:0 auto; padding:24px 20px 28px}
+  .portada .brand{color:#F3EEE3; padding-top:4px}
+  .portada-grid{display:grid; gap:36px; align-items:center; justify-items:center; padding:36px 0 20px}
+  @media (min-width:900px){ .portada-grid{grid-template-columns:auto 1fr; justify-items:start; gap:56px; padding:56px 0 36px} }
+  .circulo{
+    width:min(460px,86vw); aspect-ratio:1; border-radius:50%; box-sizing:border-box; padding:0 9%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    background:rgba(14,42,47,.72); border:2px solid rgba(243,238,227,.55);
+  }
+  @supports ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
+    .circulo{background:rgba(14,42,47,.58); backdrop-filter:blur(64px) saturate(.9); -webkit-backdrop-filter:blur(64px) saturate(.9)}
+  }
+  .circulo svg{width:56px; height:56px}
+  .circulo h1{font-size:clamp(34px,6.4vw,54px); font-weight:800; line-height:1; margin-top:14px; color:#F3EEE3}
+  .circulo .lema{font-size:clamp(18px,2.6vw,22px); margin:10px 0 0}
+  .circulo .bajada{font-size:15px; margin:8px 0 0}
+  .circulo .btn{margin-top:22px; font-size:17px; padding:13px 22px}
+  .regiones{list-style:none; margin:0; padding:0; display:grid; gap:14px; width:100%; max-width:420px}
+  .regiones-tit{font-family:var(--display); font-weight:700; font-size:18px; margin:0 0 4px}
+  .region{display:flex; align-items:center; gap:14px}
+  .region .ico{width:56px; height:56px; flex:none; border-radius:50%; display:grid; place-items:center; background:rgba(14,42,47,.8); border:2px solid #F3EEE3}
+  .region .ico svg{width:28px; height:28px}
+  .region strong{display:block; font-family:var(--display); font-size:22px; line-height:1.15}
+  .region span{display:block; font-size:15px}
+  @media (min-width:900px){
+    .regiones li:nth-child(2){margin-left:0}
+    .regiones li:nth-child(3){margin-left:44px}
+    .regiones li:nth-child(4){margin-left:64px}
+    .regiones li:nth-child(5){margin-left:64px}
+    .regiones li:nth-child(6){margin-left:44px}
+  }
+  .credito{font-size:13px; text-align:right; margin:8px 0 0}
+  .credito a{color:#F3EEE3}
+  .portada .btn-trigo:focus-visible,.portada a:focus-visible{outline-color:#E8B84A}
+
+  /* ---------- Contacto en fichas ---------- */
+  .contacto{padding:20px 32px 6px; border-top:1px solid var(--line)}
+  .contacto h4{margin:0 0 12px; font-family:var(--display); font-size:19px}
+  .contacto-btns{display:flex; flex-wrap:wrap; gap:10px}
+  .cbtn{display:inline-flex; align-items:center; gap:8px; font:inherit; font-weight:700; font-size:16px; min-height:46px; padding:0 18px; border-radius:999px; cursor:pointer; border:2px solid var(--foam); background:transparent; color:var(--text)}
+  .cbtn svg{width:20px; height:20px}
+  .cbtn.principal{background:var(--wheat); border-color:var(--wheat); color:var(--wheat-ink)}
+  .nota-contacto{margin:12px 0 14px; font-size:15px; color:var(--text-2)}
+  .nota-contacto.activa{color:var(--text); font-weight:700}
 
   /* ---------- Secciones ---------- */
   section{padding:88px 0}
@@ -223,49 +272,52 @@
 </head>
 <body>
 
-<header class="wrap">
-  <a class="brand" href="/" aria-label="Mapa sin gluten, inicio">
-    <svg viewBox="0 0 64 64" aria-hidden="true">
-      <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="3.5"/>
-      <path d="M32 10 L39 32 L32 30 L25 32Z" fill="var(--wheat)"/>
-      <path d="M32 54 L25 32 L32 34 L39 32Z" fill="var(--foam)"/>
-    </svg>
-    <span>Mapa sin gluten</span>
-  </a>
-</header>
+<header class="portada">
+  <img class="portada-fondo" src="portada-cataratas.jpg" alt="" width="960" height="641">
+  <div class="portada-velo" aria-hidden="true"></div>
+  <div class="portada-in">
+    <a class="brand" href="/" aria-label="Mapa sin gluten, inicio">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="3.5"/>
+        <path d="M32 10 L39 32 L32 30 L25 32Z" fill="#E8B84A"/>
+        <path d="M32 54 L25 32 L32 34 L39 32Z" fill="#7FD1C2"/>
+      </svg>
+      <span>Mapa sin gluten</span>
+    </a>
 
-<main>
-
-  <div class="wrap hero">
-    <div>
-      <h1>Tu brújula sin gluten.</h1>
-      <p class="sub">Alojamientos sin gluten (sin TACC) en Argentina, con lo que ofrece cada uno contado con claridad.</p>
-      <p class="por">Un proyecto de Loomi</p>
-      <div class="acciones">
+    <div class="portada-grid">
+      <div class="circulo">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="24" fill="none" stroke="#F3EEE3" stroke-width="3.5"/>
+          <g class="aguja" style="transform-origin:32px 32px">
+            <path d="M32 10 L39 32 L32 30 L25 32Z" fill="#E8B84A"/>
+            <path d="M32 54 L25 32 L32 34 L39 32Z" fill="#7FD1C2"/>
+          </g>
+        </svg>
+        <h1>Mapa sin gluten</h1>
+        <p class="lema">Tu brújula sin gluten.</p>
+        <p class="bajada">Alojamientos sin gluten (sin TACC) · Un proyecto de Loomi</p>
         <a class="btn btn-trigo" href="#sumate">Sumá tu alojamiento</a>
-        <a class="btn btn-linea" href="#ficha">Ver ejemplos de fichas</a>
+      </div>
+
+      <div style="width:100%;max-width:420px">
+        <p class="regiones-tit">Estamos sumando alojamientos en</p>
+        <ul class="regiones">
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 26 L12 9 L17 18 L21 12 L29 26Z"/><path d="M8 26 L12 19 M16 26 L19 20 M22 26 L24 22" stroke="#E8B84A"/></svg></span><span><strong>Noroeste</strong><span>Jujuy, Salta</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8 H28"/><path d="M10 8 V22 M16 8 V24 M22 8 V22" stroke="#7FD1C2"/><path d="M4 27 Q10 23 16 27 T28 27"/></svg></span><span><strong>Noreste</strong><span>Misiones, Iguazú</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 24 Q9 12 16 20 T30 18"/><path d="M2 28 H30"/><circle cx="23" cy="8" r="3" stroke="#E8B84A"/></svg></span><span><strong>Centro</strong><span>Córdoba, Mendoza</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 13 Q8 9 13 13 T23 13 T30 13" stroke="#7FD1C2"/><path d="M3 19 Q8 15 13 19 T23 19 T30 19"/><path d="M3 25 Q8 21 13 25 T23 25 T30 25" stroke="#7FD1C2"/></svg></span><span><strong>Buenos Aires</strong><span>Costa Atlántica</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M2 24 L11 8 L16 16 L20 10 L30 24Z"/><path d="M4 28 H28" stroke="#7FD1C2"/></svg></span><span><strong>Patagonia</strong><span>Río Negro, Neuquén</span></span></li>
+        </ul>
+        <p style="margin:18px 0 0"><a href="#ficha" style="color:#F3EEE3">Ver ejemplos de fichas</a></p>
       </div>
     </div>
 
-    <div class="rosa" aria-hidden="true">
-      <svg viewBox="0 0 320 320">
-        <circle cx="160" cy="160" r="150" fill="none" stroke="var(--line)" stroke-width="2"/>
-        <circle cx="160" cy="160" r="118" fill="none" stroke="var(--text)" stroke-width="5"/>
-        <g stroke="var(--text-2)" stroke-width="3" stroke-linecap="round">
-          <line x1="160" y1="22" x2="160" y2="40"/><line x1="160" y1="280" x2="160" y2="298"/>
-          <line x1="22" y1="160" x2="40" y2="160"/><line x1="280" y1="160" x2="298" y2="160"/>
-          <line x1="62" y1="62" x2="72" y2="72"/><line x1="258" y1="62" x2="248" y2="72"/>
-          <line x1="62" y1="258" x2="72" y2="248"/><line x1="258" y1="258" x2="248" y2="248"/>
-        </g>
-        <text x="160" y="14" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="20" fill="var(--wheat)">N</text>
-        <g class="aguja">
-          <path d="M160 52 L184 160 L160 150 L136 160Z" fill="var(--wheat)"/>
-          <path d="M160 268 L136 160 L160 170 L184 160Z" fill="var(--foam)"/>
-          <circle cx="160" cy="160" r="12" fill="var(--bg)" stroke="var(--text)" stroke-width="4"/>
-        </g>
-      </svg>
-    </div>
+    <p class="credito">Foto: Enaldo Valadares, <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.es">CC BY-SA 3.0</a>, desenfocada</p>
   </div>
+</header>
+
+<main>
 
   <section class="banda" id="costa">
     <div class="wrap">
@@ -346,6 +398,15 @@
             <ul><li>Al hacer la reserva</li></ul>
           </div>
         </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
+        </div>
         <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
       </article>
       <article class="ficha" id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
@@ -374,6 +435,15 @@
             <h4>Cómo avisar</h4>
             <ul><li>Con 2 días de anticipación</li></ul>
           </div>
+        </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
         </div>
         <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
       </article>
@@ -419,6 +489,15 @@
             <ul><li>Al hacer la reserva</li></ul>
           </div>
         </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
+        </div>
         <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
       </article>
       <article class="ficha" id="panel-4" role="tabpanel" aria-labelledby="tab-4" hidden>
@@ -448,6 +527,15 @@
             <h4>Cómo avisar</h4>
             <ul><li>No hace falta: siempre es sin TACC</li></ul>
           </div>
+        </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
         </div>
         <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
       </article>
@@ -488,6 +576,15 @@
             <h4>Cómo avisar</h4>
             <ul><li>Con 7 días de anticipación, para tener lista la despensa</li></ul>
           </div>
+        </div>
+        <div class="contacto">
+          <h4>Contacto</h4>
+          <div class="contacto-btns">
+            <button type="button" class="cbtn principal" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>Consultar por WhatsApp</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>Web</button>
+            <button type="button" class="cbtn" data-ej><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Instagram</button>
+          </div>
+          <p class="nota-contacto" aria-live="polite">En las fichas reales, estos botones llevan al WhatsApp, la web y el Instagram del alojamiento.</p>
         </div>
         <div class="ficha-pie">Informado por el alojamiento. No es una certificación.</div>
       </article>
@@ -648,6 +745,14 @@
         o.setAttribute("aria-selected", on ? "true" : "false");
         document.getElementById(o.getAttribute("aria-controls")).hidden = !on;
       });
+    });
+  });
+
+  document.querySelectorAll('[data-ej]').forEach(function(b){
+    b.addEventListener("click", function(){
+      var nota = b.closest('.contacto').querySelector('.nota-contacto');
+      nota.textContent = "Es un ejemplo: en una ficha real, este botón abre el " + (b.textContent.trim().indexOf("WhatsApp")>-1 ? "WhatsApp" : b.textContent.trim()) + " del alojamiento.";
+      nota.classList.add("activa");
     });
   });
 
