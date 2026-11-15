@@ -40,6 +40,7 @@
     --error:#B3261E;
   }
   *{box-sizing:border-box}
+  [hidden]{display:none !important}
   html{-webkit-text-size-adjust:100%}
   body{
     margin:0; background:var(--bg); color:var(--text);
@@ -182,6 +183,12 @@
         </div>
       </div>
 
+      <div class="field" id="campo-comercios" hidden>
+        <label for="comercios">¿Dónde compran sus huéspedes productos sin TACC?</label>
+        <span class="hint">Nombre del comercio y a cuántos km queda. Por ejemplo: Dietética Sol, a 2 km.</span>
+        <textarea id="comercios" name="comercios" maxlength="500"></textarea>
+      </div>
+
       <div class="field">
         <label for="ofrece"><span class="num">2</span>¿Ofrecen opciones sin gluten o sin lactosa? Contanos cómo.</label>
         <span class="hint">Por ejemplo: productos envasados, desayuno con aviso, cocina con cuidados, leche sin lactosa.</span>
@@ -255,6 +262,13 @@
   function show(type, text){ msg.className = "msg " + type; msg.textContent = text; }
   function val(name){ var el = form.elements[name]; return el && el.value ? el.value.trim() : ""; }
 
+  var campoComercios = document.getElementById("campo-comercios");
+  form.querySelectorAll('input[name="comida"]').forEach(function(r){
+    r.addEventListener("change", function(){
+      campoComercios.hidden = (r.value !== "cocina_equipada");
+    });
+  });
+
   form.addEventListener("submit", function(e){
     e.preventDefault();
     if (val("sitio")) return; // trampa para bots
@@ -271,6 +285,7 @@
       partido: val("partido") || null,
       comida: comida.value,
       ofrece: val("ofrece") || null,
+      comercios: comida.value === "cocina_equipada" ? (val("comercios") || null) : null,
       permiso: true,
       contacto_nombre: val("contacto_nombre") || null,
       whatsapp: val("whatsapp"),
@@ -291,6 +306,7 @@
     }).then(function(r){
       if (!r.ok) throw new Error(r.status);
       form.reset();
+      campoComercios.hidden = true;
       show("ok", "¡Listo! Te escribimos por WhatsApp para armar tu ficha antes de publicarla.");
       btn.textContent = "Enviado";
     }).catch(function(){
