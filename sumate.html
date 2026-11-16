@@ -855,6 +855,7 @@
       if (!r.ok) throw new Error(r.status);
       form.reset(); campoComercios.hidden = true; document.getElementById("campo-aviso").hidden = true;
       show("ok", "¡Listo! Te escribimos por WhatsApp para armar tu ficha antes de publicarla.");
+      try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({path: "formulario-enviado", title: "Formulario enviado", event: true}); } catch(e) {}
       btn.textContent = "Enviado";
     }).catch(function(){
       show("err", "No se pudo enviar. Probá de nuevo en un rato.");
@@ -863,5 +864,6 @@
   });
 })();
 </script>
+<script data-goatcounter="https://mapasingluten.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
