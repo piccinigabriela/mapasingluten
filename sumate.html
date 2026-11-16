@@ -129,6 +129,8 @@
   .credito a{color:#F3EEE3}
   .portada .btn-trigo:focus-visible,.portada a:focus-visible{outline-color:#E8B84A}
 
+  .menu-nota{margin:8px 0 0; font-size:15px; color:var(--text-2); font-style:italic}
+
   /* ---------- Contacto en fichas ---------- */
   .contacto{padding:20px 32px 6px; border-top:1px solid var(--line)}
   .contacto h4{margin:0 0 12px; font-family:var(--display); font-size:19px}
@@ -241,7 +243,7 @@
   .field{display:grid; gap:8px}
   label,.q{font-weight:700; font-size:17px}
   .hint{color:var(--text-2); font-size:16px; font-weight:400}
-  input[type=text],input[type=tel],input[type=email],select,textarea{
+  input[type=text],input[type=tel],input[type=email],input[type=number],select,textarea{
     width:100%; font:inherit; font-size:17px; color:var(--text); background:var(--bg);
     border:2px solid var(--line); border-radius:14px; padding:13px 15px;
   }
@@ -320,11 +322,11 @@
       <div style="width:100%;max-width:420px">
         <p class="regiones-tit">Estamos sumando alojamientos en</p>
         <ul class="regiones">
-          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 26 L12 9 L17 18 L21 12 L29 26Z"/><path d="M8 26 L12 19 M16 26 L19 20 M22 26 L24 22" stroke="#E8B84A"/></svg></span><span><strong>Noroeste</strong><span>Jujuy, Salta</span></span></li>
-          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8 H28"/><path d="M10 8 V22 M16 8 V24 M22 8 V22" stroke="#7FD1C2"/><path d="M4 27 Q10 23 16 27 T28 27"/></svg></span><span><strong>Noreste</strong><span>Misiones, Iguazú</span></span></li>
-          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 24 Q9 12 16 20 T30 18"/><path d="M2 28 H30"/><circle cx="23" cy="8" r="3" stroke="#E8B84A"/></svg></span><span><strong>Centro</strong><span>Córdoba, Mendoza</span></span></li>
-          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 13 Q8 9 13 13 T23 13 T30 13" stroke="#7FD1C2"/><path d="M3 19 Q8 15 13 19 T23 19 T30 19"/><path d="M3 25 Q8 21 13 25 T23 25 T30 25" stroke="#7FD1C2"/></svg></span><span><strong>Buenos Aires</strong><span>Costa Atlántica</span></span></li>
-          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M2 24 L11 8 L16 16 L20 10 L30 24Z"/><path d="M4 28 H28" stroke="#7FD1C2"/></svg></span><span><strong>Patagonia</strong><span>Río Negro, Neuquén</span></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 26 L12 9 L17 18 L21 12 L29 26Z"/><path d="M8 26 L12 19 M16 26 L19 20 M22 26 L24 22" stroke="#E8B84A"/></svg></span><span><strong>Noroeste</strong></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8 H28"/><path d="M10 8 V22 M16 8 V24 M22 8 V22" stroke="#7FD1C2"/><path d="M4 27 Q10 23 16 27 T28 27"/></svg></span><span><strong>Noreste</strong></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 24 Q9 12 16 20 T30 18"/><path d="M2 28 H30"/><circle cx="23" cy="8" r="3" stroke="#E8B84A"/></svg></span><span><strong>Centro</strong></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 13 Q8 9 13 13 T23 13 T30 13" stroke="#7FD1C2"/><path d="M3 19 Q8 15 13 19 T23 19 T30 19"/><path d="M3 25 Q8 21 13 25 T23 25 T30 25" stroke="#7FD1C2"/></svg></span><span><strong>Buenos Aires</strong></span></li>
+          <li class="region"><span class="ico"><svg viewBox="0 0 32 32" fill="none" stroke="#F3EEE3" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M2 24 L11 8 L16 16 L20 10 L30 24Z"/><path d="M4 28 H28" stroke="#7FD1C2"/></svg></span><span><strong>Patagonia</strong></span></li>
         </ul>
         <p style="margin:18px 0 0"><a href="#ficha" style="color:#F3EEE3">Ver ejemplos de fichas</a></p>
       </div>
@@ -477,6 +479,11 @@
             <ul><li>Leche deslactosada y bebidas vegetales</li></ul>
           </div>
           <div class="bloque">
+            <h4>Menú sin TACC</h4>
+            <ul><li>Empanadas de carne al horno</li><li>Bife de chorizo con verduras grilladas</li><li>Flan casero con dulce de leche</li></ul>
+            <p class="menu-nota">Lo actualiza el alojamiento. Última actualización: 10/11.</p>
+          </div>
+          <div class="bloque">
             <h4>Cómo avisar</h4>
             <ul><li>Al hacer la reserva</li></ul>
           </div>
@@ -514,6 +521,11 @@
           <div class="bloque">
             <h4>También ofrece</h4>
             <ul><li>Leche deslactosada y bebidas vegetales</li></ul>
+          </div>
+          <div class="bloque">
+            <h4>Menú sin TACC</h4>
+            <ul><li>Tamales y humita en chala</li><li>Guiso de quinoa</li><li>Alfajores de maicena</li></ul>
+            <p class="menu-nota">Lo actualiza el alojamiento. Última actualización: 10/11.</p>
           </div>
           <div class="bloque">
             <h4>Cómo avisar</h4>
@@ -593,7 +605,7 @@
         <li><strong>Información, no certificación</strong><span>Publicamos lo que nos informa cada alojamiento, con la fecha. No damos garantías sanitarias.</span></li>
         <li><strong>Primero la categoría, después el destacado</strong><span>Cada alojamiento compite solo dentro de su categoría. El distintivo “Cumple criterios completos” es gratis para quien hace bien lo que su categoría promete: una hostería con productos envasados puede tenerlo igual que una cocina 100 % sin gluten. Aparecer primero dentro de tu categoría, en tu zona, es un servicio pago opcional, solo para quienes tienen el distintivo, e incluido para quienes usan Loomi.</span></li>
         <li><strong>Los anuncios van aparte</strong><span>Si una marca o un restaurante paga por aparecer, se marca como “Anuncio” y nunca se mezcla con la información de los alojamientos.</span></li>
-        <li><strong>Podés salir cuando quieras</strong><span>Escribinos a <a href="mailto:hola@mapasingluten.app">hola@mapasingluten.app</a> y damos de baja tu ficha. Tus datos los usamos solo para armarla y escribirte.</span></li>
+        <li><strong>Tu ficha al día depende de vos</strong><span>Si cambiás lo que ofrecés o cómo lo preparás, avisanos para cambiar tu categoría. Si dejás de ofrecer opciones sin TACC, pedinos la baja. Podés salir cuando quieras: escribinos a <a href="mailto:hola@mapasingluten.app">hola@mapasingluten.app</a>. Tus datos los usamos solo para tu ficha y para escribirte.</span></li>
       </ul>
 
       <details class="criterios">
@@ -699,6 +711,16 @@
           <textarea id="ofrece" name="ofrece" maxlength="1000"></textarea>
         </div>
 
+        <div class="field" id="campo-aviso" hidden>
+          <div class="q">¿Con cuánta anticipación tiene que avisar el huésped?</div>
+          <div class="opts" role="radiogroup">
+            <label class="opt"><input type="radio" name="aviso" value="siempre"> Siempre tenemos, no hace falta avisar</label>
+            <label class="opt"><input type="radio" name="aviso" value="al_reservar"> Al hacer la reserva</label>
+            <label class="opt" style="align-items:center"><input type="radio" name="aviso" value="dias" style="margin-top:0"> Con <input type="number" id="aviso_dias" name="aviso_dias" min="1" max="60" inputmode="numeric" aria-label="Días de anticipación" style="width:76px;padding:8px 10px;margin:0 4px"> días antes</label>
+          </div>
+          <span class="hint">En lugares alejados, comprar productos sin TACC puede llevar días. Poné lo que de verdad necesitás.</span>
+        </div>
+
         <div class="field">
           <div class="q"><span class="num">3</span>¿Querés aparecer gratis en el mapa?</div>
           <label class="opt"><input type="checkbox" id="permiso" name="permiso" required> Sí, quiero aparecer. Sé que se publica según lo que informamos nosotros y acepto las <a href="#condiciones">condiciones</a>.</label>
@@ -763,7 +785,10 @@
   function val(name){ var el = form.elements[name]; return el && el.value ? el.value.trim() : ""; }
 
   form.querySelectorAll('input[name="comida"]').forEach(function(r){
-    r.addEventListener("change", function(){ campoComercios.hidden = (r.value !== "cocina_equipada"); });
+    r.addEventListener("change", function(){
+      campoComercios.hidden = (r.value !== "cocina_equipada");
+      document.getElementById("campo-aviso").hidden = (r.value === "no");
+    });
   });
 
   var tabs = document.querySelectorAll('.tab');
@@ -794,6 +819,9 @@
     if (!val("provincia")) { show("err", "Elegí la provincia."); return; }
     if (!comida) { show("err", "Contestá la pregunta 1."); return; }
     if (!document.getElementById("permiso").checked) { show("err", "Para aparecer en el mapa, marcá la pregunta 3."); return; }
+    var av = form.querySelector('input[name="aviso"]:checked');
+    var dias = parseInt(val("aviso_dias"),10);
+    if (comida.value !== "no" && av && av.value === "dias" && !(dias >= 1 && dias <= 60)) { show("err", "Decinos con cuántos días de anticipación hay que avisar."); return; }
     if (val("whatsapp").replace(/\D/g,"").length < 6) { show("err", "Dejanos un WhatsApp para escribirte."); return; }
 
     var data = {
@@ -803,6 +831,8 @@
       comida: comida.value,
       ofrece: val("ofrece") || null,
       comercios: comida.value === "cocina_equipada" ? (val("comercios") || null) : null,
+      aviso: (comida.value !== "no" && form.querySelector('input[name="aviso"]:checked')) ? form.querySelector('input[name="aviso"]:checked').value : null,
+      aviso_dias: null,
       permiso: true,
       contacto_nombre: val("contacto_nombre") || null,
       whatsapp: val("whatsapp"),
@@ -810,6 +840,7 @@
       web: val("web") || null
     };
 
+    if (data.aviso === "dias") data.aviso_dias = dias;
     btn.disabled = true; btn.textContent = "Enviando…";
     fetch(SUPABASE_URL + "/rest/v1/mapa_solicitudes", {
       method: "POST",
@@ -822,7 +853,7 @@
       body: JSON.stringify(data)
     }).then(function(r){
       if (!r.ok) throw new Error(r.status);
-      form.reset(); campoComercios.hidden = true;
+      form.reset(); campoComercios.hidden = true; document.getElementById("campo-aviso").hidden = true;
       show("ok", "¡Listo! Te escribimos por WhatsApp para armar tu ficha antes de publicarla.");
       btn.textContent = "Enviado";
     }).catch(function(){
