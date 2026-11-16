@@ -219,6 +219,22 @@
   .pasos strong{display:block; font-family:var(--display); font-size:21px; line-height:1.2}
   .pasos span{color:var(--text-2)}
 
+  /* ---------- Condiciones ---------- */
+  .condiciones{list-style:none; margin:40px 0 0; padding:0; display:grid; gap:28px; max-width:760px}
+  @media (min-width:860px){ .condiciones{grid-template-columns:1fr 1fr; gap:32px 48px; max-width:none} }
+  .condiciones li{border-top:2px solid var(--line); padding-top:16px}
+  .condiciones strong{display:block; font-family:var(--display); font-size:21px; line-height:1.2; margin-bottom:6px}
+  .condiciones span{color:var(--text-2)}
+
+  .criterios{margin-top:36px; max-width:760px; border:2px solid var(--line); border-radius:20px; background:var(--surface)}
+  .criterios summary{cursor:pointer; padding:18px 22px; font-family:var(--display); font-weight:700; font-size:19px; list-style-position:inside}
+  .criterios[open] summary{border-bottom:2px solid var(--line)}
+  .criterios-in{padding:6px 22px 20px}
+  .criterios-in h3{font-size:18px; margin:18px 0 8px}
+  .criterios-in ul{margin:0; padding-left:20px; color:var(--text-2)}
+  .criterios-in li{margin:6px 0}
+  .criterios-in strong{color:var(--text)}
+
   /* ---------- Formulario ---------- */
   form{display:grid; gap:26px; background:var(--surface); border:2px solid var(--line); border-radius:28px; padding:32px}
   @media (max-width:520px){ form{padding:22px} }
@@ -322,12 +338,12 @@
 
   <section id="ficha">
     <div class="wrap">
-      <h2>Así se ve cada ficha</h2>
-      <p class="intro">Cada alojamiento cuenta qué ofrece y cómo lo prepara. Nada de certificaciones ni garantías: los datos concretos para que cada viajero decida. Elegí una modalidad para ver un ejemplo.</p>
+      <h2>Cinco categorías, según cómo se prepara la comida</h2>
+      <p class="intro">Cada alojamiento entra en una de estas categorías, según cómo prepara la comida sin TACC. Ninguna es mejor que otra: cada una le sirve a un viajero distinto. Tocá una para ver una ficha de ejemplo.</p>
 
       <div class="aviso-ejemplo"><span><strong>Son ejemplos.</strong> Estos alojamientos no existen: sirven para mostrar cómo se verá la ficha de cada tipo de servicio.</span></div>
 
-      <div class="tabs" role="tablist" aria-label="Modalidades de servicio">
+      <div class="tabs" role="tablist" aria-label="Categorías">
         <button type="button" class="tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true">Solo envasados</button>
         <button type="button" class="tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false">Cocina con cuidados</button>
         <button type="button" class="tab" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false">Área exclusiva</button>
@@ -352,13 +368,14 @@
             <h3>Hostería Ejemplo</h3>
             <div class="lugar">Pinamar</div>
             <span class="ficha-ej">Ejemplo, no es un alojamiento real</span>
+            <div class="sello"><svg width="18" height="18" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="5"/><path d="M32 10 L39 32 L32 30 L25 32Z" fill="currentColor"/></svg>Cumple criterios completos</div>
           </div>
           <span class="categoria">Solo envasados</span>
         </div>
         <div class="ficha-cuerpo">
           <div class="bloque clave">
             <h4>Cómo se prepara</h4>
-            <ul><li>Productos industriales en envases individuales</li><li>No hay un área exclusiva de elaboración</li></ul>
+            <ul><li>Productos industriales en envases individuales</li><li>Se sirven aparte, con plato y cubiertos propios</li><li>No hay un área exclusiva de elaboración</li></ul>
           </div>
           <div class="bloque">
             <h4>En el desayuno, sin TACC</h4>
@@ -566,6 +583,47 @@
     </div>
   </section>
 
+  <section id="condiciones">
+    <div class="wrap">
+      <h2>Las condiciones, claras</h2>
+      <p class="intro">Antes de sumarte, esto es lo que tenés que saber.</p>
+      <ul class="condiciones">
+        <li><strong>Aparecer es gratis</strong><span>Tu ficha no tiene costo. Si más adelante sumamos servicios pagos, van a ser opcionales y te vamos a avisar antes.</span></li>
+        <li><strong>Nada se publica sin tu aprobación</strong><span>Te mandamos tu ficha para que la revises. Cada temporada la actualizamos con vos.</span></li>
+        <li><strong>Información, no certificación</strong><span>Publicamos lo que nos informa cada alojamiento, con la fecha. No damos garantías sanitarias.</span></li>
+        <li><strong>Primero la categoría, después el destacado</strong><span>Cada alojamiento compite solo dentro de su categoría. El distintivo “Cumple criterios completos” es gratis para quien hace bien lo que su categoría promete: una hostería con productos envasados puede tenerlo igual que una cocina 100 % sin gluten. Aparecer primero dentro de tu categoría, en tu zona, es un servicio pago opcional, solo para quienes tienen el distintivo, e incluido para quienes usan Loomi.</span></li>
+        <li><strong>Los anuncios van aparte</strong><span>Si una marca o un restaurante paga por aparecer, se marca como “Anuncio” y nunca se mezcla con la información de los alojamientos.</span></li>
+        <li><strong>Podés salir cuando quieras</strong><span>Escribinos a <a href="mailto:hola@mapasingluten.app">hola@mapasingluten.app</a> y damos de baja tu ficha. Tus datos los usamos solo para armarla y escribirte.</span></li>
+      </ul>
+
+      <details class="criterios">
+        <summary>Cómo se gana el distintivo en cada categoría</summary>
+        <div class="criterios-in">
+          <h3>Lo que cumplen todos</h3>
+          <ul>
+            <li>La ficha está completa, aprobada y actualizada en la temporada.</li>
+            <li>El huésped puede avisar su condición antes de llegar, y el alojamiento dice cómo y con cuánta anticipación.</li>
+            <li>Los productos sin TACC están rotulados con el logo oficial, o se elaboran con los cuidados que dice la ficha.</li>
+            <li>Quien sirve o prepara la comida sabe evitar la contaminación cruzada.</li>
+          </ul>
+          <h3>Lo que suma cada categoría</h3>
+          <ul>
+            <li><strong>Solo envasados:</strong> envases individuales cerrados, servidos aparte, con plato y cubiertos propios, sin pasar por la tostadora común.</li>
+            <li><strong>Cocina con cuidados:</strong> utensilios y recipientes exclusivos, y un equipo exclusivo para tostar y calentar (una tostadora o una air fryer solo para sin TACC). Se prepara primero lo sin TACC, sobre superficies limpias.</li>
+            <li><strong>Área exclusiva</strong> y <strong>Cocina 100 % sin gluten:</strong> cumplen por cómo trabajan, con los ingredientes rotulados.</li>
+            <li><strong>Cocina para huéspedes:</strong> despensa básica sin TACC, utensilios exclusivos para el huésped (tabla, colador y tostadora o air fryer) y el dato de dónde comprar cerca.</li>
+          </ul>
+          <h3>Cómo se otorga</h3>
+          <ul>
+            <li>Según lo que declara el alojamiento, lo mismo que dice su ficha. No lo verificamos en persona.</li>
+            <li>Se revisa cada temporada.</li>
+            <li>Si un huésped celíaco reporta un problema y se confirma, el distintivo se quita.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+
   <section class="banda" id="sumate">
     <div class="wrap narrow">
       <h2>Sumá tu alojamiento</h2>
@@ -643,7 +701,7 @@
 
         <div class="field">
           <div class="q"><span class="num">3</span>¿Querés aparecer gratis en el mapa?</div>
-          <label class="opt"><input type="checkbox" id="permiso" name="permiso" required> Sí, quiero aparecer. Sé que se publica según lo que informamos nosotros.</label>
+          <label class="opt"><input type="checkbox" id="permiso" name="permiso" required> Sí, quiero aparecer. Sé que se publica según lo que informamos nosotros y acepto las <a href="#condiciones">condiciones</a>.</label>
         </div>
 
         <div class="row">
