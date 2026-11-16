@@ -810,6 +810,34 @@
     });
   });
 
+  // Aviso por mail de cada solicitud (EmailJS)
+  function avisarPorMail(d){
+    try {
+      var comidaTxt = {sirve:"Sí, sirven comida", cocina_equipada:"No, pero tienen cocina equipada", no:"No"}[d.comida] || d.comida;
+      var avisoTxt = d.aviso === "siempre" ? "Siempre tienen, no hace falta avisar"
+                   : d.aviso === "al_reservar" ? "Al hacer la reserva"
+                   : d.aviso === "dias" ? ("Con " + d.aviso_dias + " días de anticipación") : "-";
+      var p = {
+        alojamiento: d.alojamiento, localidad: d.localidad, provincia: d.provincia || "-",
+        comida: comidaTxt, ofrece: d.ofrece || "-", comercios: d.comercios || "-", aviso: avisoTxt,
+        contacto_nombre: d.contacto_nombre || "-", whatsapp: d.whatsapp, email: d.email || "", web: d.web || "-"
+      };
+      p.name = d.alojamiento + " (" + d.localidad + ")";
+      p.reply_to = d.email || "";
+      p.title = "Nueva solicitud en Mapa sin gluten";
+      p.time = new Date().toLocaleString("es-AR");
+      p.message = "Alojamiento: " + p.alojamiento + "\nLocalidad: " + p.localidad + ", " + p.provincia +
+        "\nSirven comida: " + p.comida + "\nQué ofrecen: " + p.ofrece + "\nDónde compran: " + p.comercios +
+        "\nAnticipación: " + p.aviso + "\n\nContacto: " + p.contacto_nombre + "\nWhatsApp: " + p.whatsapp +
+        "\nEmail: " + (p.email || "-") + "\nWeb o Instagram: " + p.web;
+      fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({service_id: "service_z8apzek", template_id: "template_5g7zyhg", user_id: "htm2fLHklqyTWMn0U", template_params: p})
+      }).catch(function(){});
+    } catch(e) {}
+  }
+
   form.addEventListener("submit", function(e){
     e.preventDefault();
     if (val("sitio")) return;
@@ -856,6 +884,7 @@
       form.reset(); campoComercios.hidden = true; document.getElementById("campo-aviso").hidden = true;
       show("ok", "¡Listo! Te escribimos por WhatsApp para armar tu ficha antes de publicarla.");
       try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({path: "formulario-enviado", title: "Formulario enviado", event: true}); } catch(e) {}
+      avisarPorMail(data);
       btn.textContent = "Enviado";
     }).catch(function(){
       show("err", "No se pudo enviar. Probá de nuevo en un rato.");
